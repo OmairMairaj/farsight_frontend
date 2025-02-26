@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import api from '@/utils/axiosInstance';
-import { FaTrash } from 'react-icons/fa';
+import { FaChevronCircleLeft, FaTrash } from 'react-icons/fa';
 import Nav from '../../components/Nav';
 import { useAdminAuth } from '@/utils/checkAuth';
 
@@ -334,7 +334,10 @@ const CategoryPage = () => {
         <div className='min-h-screen bg-white'>
             <Nav />
 
-            <div className="container mx-auto mt-8 pb-40 px-6 text-sm">
+            <div className="container mx-auto mt-4 pb-40 px-6 text-sm">
+                <button onClick={() => router.back()} className='text-xl text-gray-600 flex gap-2 items-center mb-2'>
+                    <FaChevronCircleLeft />Back
+                </button>
                 <div className='mb-2 flex justify-between space-x-4'>
                     {/* ✅ Category Selection Dropdown */}
                     <div className="text-center flex items-center">

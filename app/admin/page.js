@@ -62,7 +62,7 @@ const Admin = () => {
         <div className="min-h-screen bg-white">
             <nav className="bg-white text-black shadow-md sticky top-0">
                 <div className="flex mx-auto container items-center justify-between py-3 px-6">
-                    <div className="flex items-center">
+                    <div className="flex items-center" onClick={() => router.push("/")}>
                         <img
                             src="/images/farsight-logo.png"
                             alt="Farsight Logo"
@@ -76,12 +76,11 @@ const Admin = () => {
 
             {/* ✅ Login Form */}
             <div className="container mx-auto flex text-black w-full h-[80vh] justify-center items-center mt-4 px-6 text-sm">
-                <div className="w-1/3 max-w-lg flex flex-col justify-center items-center rounded-xl shadow-md bg-[#fdfdfd] p-6">
-                    <h1 className="text-2xl font-bold mb-3">LOGIN</h1>
+                <div className="w-1/3 min-w-72 flex flex-col justify-center items-center rounded-xl shadow-md bg-[#fdfdfd] border-2 border-blue-400 p-6">
+                    <h1 className="text-2xl font-bold mb-6 text-blue-400 font-sans">LOGIN</h1>
                     <p className="text-gray-600 mb-4">Login to access the admin panel.</p>
 
-                    {/* ✅ Error Message */}
-                    {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
 
                     <form className="w-full flex flex-col" onSubmit={handleSubmit}>
                         {/* ✅ Email Input */}
@@ -105,6 +104,9 @@ const Admin = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
+
+                        {/* ✅ Error Message */}
+                        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
                         {/* ✅ Login Button */}
                         <button
