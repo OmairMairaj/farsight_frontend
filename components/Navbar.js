@@ -146,7 +146,7 @@ const Navbar = () => {
                         <a href="#get-quote" className="hover:text-blue-500 transition">
                             Get Quote
                         </a>
-                        <button className="bg-blue-400 px-8 py-2 rounded-xl text-white hover:bg-blue-500">
+                        <button onClick={() => router.push('/admin')} className="bg-blue-400 px-8 py-2 rounded-xl text-white hover:bg-blue-500">
                             LOGIN
                         </button>
                     </div>
