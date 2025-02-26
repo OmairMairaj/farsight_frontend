@@ -1,0 +1,800 @@
+[
+    {
+        "category_name": "OPEN SPRING ISOLATORS - SMALL- (FS)",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "FSˢ-20 - 4mm - Green",
+                "image_path": "",
+                "type": "Small Spring (Spring only)",
+                "deflection": "1/2 Inch",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "FSˢ-50 - 5mm - Red",
+                "image_path": "",
+                "type": "Small Spring (Spring only)",
+                "deflection": "1/2 Inch",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "FSˢ-80 - 6mm - Orange",
+                "image_path": "",
+                "type": "Small Spring (Spring only)",
+                "deflection": "1/2 Inch",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Small - Top Cup/Bolt Set",
+                "image_path": "",
+                "type": "Small Spring (Parts)",
+                "deflection": "-",
+                "quantity": 24,
+                "supplier": "ADIL",
+                "unit_cost": 800,
+                "total_cost": 19200,
+                "comments": "8 are Rusted"
+            },
+            {
+                "model": "Small - Pad",
+                "image_path": "",
+                "type": "Small Spring (Parts)",
+                "deflection": "-",
+                "quantity": 33,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": "5 Are Rusted"
+            },
+            {
+                "model": "Small - Cup",
+                "image_path": "",
+                "type": "Small Spring (Parts)",
+                "deflection": "-",
+                "quantity": 5,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Small - Bolt",
+                "image_path": "",
+                "type": "Small Spring (Parts)",
+                "deflection": "-",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Small - Cup (Type#2)",
+                "image_path": "",
+                "type": "Small Spring (Parts)",
+                "deflection": "-",
+                "quantity": 8,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": "Not Used in Standard"
+            }
+        ]
+    },
+    {
+        "category_name": "OPEN SPRING ISOLATORS STANDARD - FS",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "FS-50 - 8mm - Black",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 26,
+                "supplier": "OWAIS",
+                "unit_cost": 850,
+                "total_cost": 22100,
+                "comments": ""
+            },
+            {
+                "model": "FS-100 - 9mm - Black",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 41,
+                "supplier": "OWAIS",
+                "unit_cost": 850,
+                "total_cost": 34850,
+                "comments": ""
+            },
+            {
+                "model": "FS-150 - 10mm - Blue",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 49,
+                "supplier": "OWAIS",
+                "unit_cost": 850,
+                "total_cost": 41650,
+                "comments": ""
+            },
+            {
+                "model": "FS-200 - 11mm - Red",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 42,
+                "supplier": "OWAIS",
+                "unit_cost": 850,
+                "total_cost": 35700,
+                "comments": ""
+            },
+            {
+                "model": "FS-300 - 12mm - Green",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 64,
+                "supplier": "OWAIS",
+                "unit_cost": 900,
+                "total_cost": 57600,
+                "comments": ""
+            },
+            {
+                "model": "FS-400 - 13mm - Blue",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 47,
+                "supplier": "OWAIS",
+                "unit_cost": 900,
+                "total_cost": 42300,
+                "comments": ""
+            },
+            {
+                "model": "FS-550 - 14mm - Black",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 43,
+                "supplier": "OWAIS",
+                "unit_cost": 925,
+                "total_cost": 39775,
+                "comments": ""
+            },
+            {
+                "model": "FS-650 - 15mm - Blue",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 60,
+                "supplier": "OWAIS",
+                "unit_cost": 925,
+                "total_cost": 55500,
+                "comments": ""
+            },
+            {
+                "model": "FS-800 - 16mm - Black",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 29,
+                "supplier": "OWAIS",
+                "unit_cost": 1000,
+                "total_cost": 29000,
+                "comments": ""
+            },
+            {
+                "model": "FS-1000 - 17mm - Red",
+                "image_path": "",
+                "type": "Standard Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 17,
+                "supplier": "OWAIS",
+                "unit_cost": 1100,
+                "total_cost": 18700,
+                "comments": ""
+            },
+            {
+                "model": "FSˢ-1250 (14 + 10mm) - Black/Blue",
+                "image_path": "",
+                "type": "Standard Spring + Internal Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 3,
+                "supplier": "OWAIS",
+                "unit_cost": 1725,
+                "total_cost": 5175,
+                "comments": "3 additional are without Internal Springs"
+            },
+            {
+                "model": "FSˢ-1500 (15 + 10mm) - Blue/Blue",
+                "image_path": "",
+                "type": "Standard Spring + Internal Spring (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 10,
+                "supplier": "OWAIS",
+                "unit_cost": 1725,
+                "total_cost": 17250,
+                "comments": ""
+            },
+            {
+                "model": "IS - Small dia - 9mm - Black",
+                "image_path": "",
+                "type": "Internal Spring (Small dia) (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 750,
+                "comments": ""
+            },
+            {
+                "model": "IS - Small dia - 10mm - Blue",
+                "image_path": "",
+                "type": "Internal Spring (Small dia) (Spring only)",
+                "deflection": "1/2 inch",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 800,
+                "comments": ""
+            },
+            {
+                "model": "Large - Top Cup/Bolt Set",
+                "image_path": "",
+                "type": "Large Spring (Parts)",
+                "deflection": "-",
+                "quantity": 105,
+                "supplier": "ADIL",
+                "unit_cost": 1500,
+                "total_cost": 157500,
+                "comments": ""
+            }
+        ]
+    },
+    {
+        "category_name": "U-CHANNEL SPRING ISOLATORS - (FSU)",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "FSU-1-WHITE - U-Channel",
+                "image_path": "",
+                "type": "U Channel Single Spring (Complete Set)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 4500,
+                "comments": ""
+            },
+            {
+                "model": "FSU-2-BLACK - U-Channel",
+                "image_path": "",
+                "type": "U Channel Double Spring (Complete Set)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 9500,
+                "comments": ""
+            },
+            {
+                "model": "FSU-3-GREY - U-Channel",
+                "image_path": "",
+                "type": "U Channel Triple Spring (Complete Set)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 12000,
+                "comments": ""
+            },
+            {
+                "model": "Bolt with Rubber for U-Channel",
+                "image_path": "",
+                "type": "Bolt with Rubber (Parts)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "FSU-1 - BLACK - OLD",
+                "image_path": "",
+                "type": "U Channel Single Spring (Complete Set)",
+                "deflection": "Standard Springs",
+                "quantity": 3,
+                "supplier": "OWAIS",
+                "unit_cost": 4500,
+                "total_cost": 13500,
+                "comments": "Just Frame left"
+            },
+            {
+                "model": "FSU-2 - WHITE-1700kg - SKH Stock",
+                "image_path": "",
+                "type": "U Channel Double Spring (Complete Set)",
+                "deflection": "1 Inch",
+                "quantity": 17,
+                "supplier": "OWAIS",
+                "unit_cost": 9500,
+                "total_cost": 161500,
+                "comments": ""
+            },
+            {
+                "model": "FSU-1 - WHITE -1100 kg - SKH Stock",
+                "image_path": "",
+                "type": "U Channel Single Spring (Complete Set)",
+                "deflection": "1 Inch",
+                "quantity": 17,
+                "supplier": "OWAIS",
+                "unit_cost": 4200,
+                "total_cost": 71400,
+                "comments": ""
+            },
+            {
+                "model": "FSU-1 - WHITE -600 kg - SKH Stock",
+                "image_path": "",
+                "type": "U Channel Single Spring (Complete Set)",
+                "deflection": "1 Inch",
+                "quantity": 8,
+                "supplier": "OWAIS",
+                "unit_cost": 3500,
+                "total_cost": 28000,
+                "comments": ""
+            },
+            {
+                "model": "FSU-1 - WHITE -250 kg - SKH Stock",
+                "image_path": "",
+                "type": "U Channel Single Spring (Complete Set)",
+                "deflection": "1 Inch",
+                "quantity": 4,
+                "supplier": "OWAIS",
+                "unit_cost": 3500,
+                "total_cost": 14000,
+                "comments": ""
+            }
+        ]
+    },
+    {
+        "category_name": "HOUSED SPRING ISOLATOR - (FSY) & (FSZ)",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "FSZ-1-Grey - SG Casted Iron",
+                "image_path": "",
+                "type": "Single Spring - SG Iron (without Spring)",
+                "deflection": "Standard Springs",
+                "quantity": 4,
+                "supplier": "ADIL",
+                "unit_cost": 8000,
+                "total_cost": 32000,
+                "comments": ""
+            },
+            {
+                "model": "FSZˢ-2-Blue - SG Casted Iron",
+                "image_path": "",
+                "type": "Double Spring - SG Iron (without Spring)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 9000,
+                "comments": ""
+            },
+            {
+                "model": "FSY-1-Housed - Black-Green",
+                "image_path": "",
+                "type": "FSY- Single Spring (without Spring)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 9000,
+                "comments": ""
+            },
+            {
+                "model": "FSYˢ-2- Housed - Red-Black",
+                "image_path": "",
+                "type": "FSYˢ- Double Spring (without Spring)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 11000,
+                "comments": ""
+            },
+            {
+                "model": "FSY-3- Housed - Blue-Black",
+                "image_path": "",
+                "type": "FSYˢ- Triple Spring (without Spring)",
+                "deflection": "Standard Springs",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 13000,
+                "comments": ""
+            },
+            {
+                "model": "Bolt for Housed Isolators",
+                "image_path": "",
+                "type": "Housed Bolt (Parts)",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Top Load Plate for FSZ-1 & FSY-1",
+                "image_path": "",
+                "type": "Housed Top Plate (Parts)",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Top Load Plate for FSY-2",
+                "image_path": "",
+                "type": "Housed Top Plate (Parts)",
+                "deflection": "-",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Top Load Plate for FSY-3",
+                "image_path": "",
+                "type": "Housed Top Plate (Parts)",
+                "deflection": "-",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            }
+        ]
+    },
+    {
+        "category_name": "SEISMIC SPRING ISOLATOR - (FLS)",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "FLSS-1-GREY",
+                "image_path": "",
+                "type": "Single Spring (complete Set with Springs)",
+                "deflection": "1 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 9000,
+                "comments": ""
+            },
+            {
+                "model": "FLSS-2-GREY",
+                "image_path": "",
+                "type": "Double Spring (complete Set with Springs)",
+                "deflection": "1 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 14000,
+                "comments": ""
+            },
+            {
+                "model": "FLSS-4-GREY",
+                "image_path": "",
+                "type": "Quadrapple Spring (complete Set with Springs)",
+                "deflection": "1 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 22000,
+                "comments": ""
+            },
+            {
+                "model": "Large Bolt for Seismic",
+                "image_path": "",
+                "type": "Seismic Bolt (Parts)",
+                "deflection": "-",
+                "quantity": 5,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            }
+        ]
+    },
+    {
+        "category_name": "CUSTOM DESIGN ISOLATOR",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "Custom Housed Isolator for Genset",
+                "image_path": "",
+                "type": "2 Spring Housed",
+                "deflection": "1 Inch",
+                "quantity": 4,
+                "supplier": "ADIL",
+                "unit_cost": 9000,
+                "total_cost": 36000,
+                "comments": "without Seismic Springs"
+            },
+            {
+                "model": "Custom Isolator (Sabro) FWO project",
+                "image_path": "",
+                "type": "2 Spring with Rubbers & Custom Spring",
+                "deflection": "1 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 8000,
+                "total_cost": 8000,
+                "comments": ""
+            },
+            {
+                "model": "Custom Isolator for Government Project (Engine Test Bench) 8 Springs",
+                "image_path": "",
+                "type": "8 Springs Outer & Internal Seismic with Rubber",
+                "deflection": "1 Inch",
+                "quantity": 0,
+                "supplier": "OWAIS",
+                "unit_cost": 60000,
+                "comments": ""
+            },
+            {
+                "model": "Custom Isolator for Government Project (Engine Test Bench) 4 Spring Sample",
+                "image_path": "",
+                "type": "4 Spring Seismic with Rubber (Sample Piece)",
+                "deflection": "1 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 30000,
+                "total_cost": 30000,
+                "comments": ""
+            },
+            {
+                "model": "Custom Seismic",
+                "image_path": "",
+                "type": "Housed Double Spring Seismic",
+                "deflection": "1 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Risers for Piping - BTI Project",
+                "image_path": "",
+                "type": "-",
+                "deflection": "1 Inch",
+                "quantity": 3,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "22mm - 9 Coil - 12inch - Dia 5inch - 2200kg Spring for Diesel Storage Tank",
+                "image_path": "",
+                "type": "Heavy Duty Spring with testing",
+                "deflection": "4 Inch",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 3500,
+                "total_cost": 3500,
+                "comments": ""
+            }
+        ]
+    },
+    {
+        "category_name": "SPRING & NEOPRENE HANGERS (SMALL & LARGE) - (FS-HS) & (FS-NH)",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "FS-HS Large with Cup without Spring",
+                "image_path": "",
+                "type": "Large Spring Hanger (without Spring)",
+                "deflection": "Standard Spring",
+                "quantity": 9,
+                "supplier": "OWAIS",
+                "unit_cost": 1500,
+                "total_cost": 13500,
+                "comments": "4 In office & 5 in Inventory. 1 Red, 1 Blue & Rest Black. Need Fresh Coating."
+            },
+            {
+                "model": "Large - Cup",
+                "image_path": "",
+                "type": "Large Spring (Parts)",
+                "deflection": "-",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "FS-HS-Small",
+                "image_path": "",
+                "type": "Small Spring Hanger (Complete Set)",
+                "deflection": "Standard Small Spring",
+                "quantity": 1,
+                "supplier": "OWAIS",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "FS-HS-Small (Type#2)",
+                "image_path": "",
+                "type": "Small Spring Hanger (Type#2) (Complete Set)",
+                "deflection": "Standard Small Spring",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "FS-HS-Small (Type#2) with Neoprene",
+                "image_path": "",
+                "type": "Small Spring Hanger (Type#2) with Neoprene (Complete Set)",
+                "deflection": "Standard Small Spring",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Small - Cup (without thread)",
+                "image_path": "",
+                "type": "Small Spring (Parts)",
+                "deflection": "-",
+                "quantity": 4,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Neoprene Hanger - Small",
+                "image_path": "",
+                "type": "Small - Neoprene Hanger (Complete Set)",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Neoprene Hanger - Small Frame",
+                "image_path": "",
+                "type": "Small - Neoprene Hanger",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            }
+        ]
+    },
+    {
+        "category_name": "NEOPRENE ISOLATORS & PADS (FLOOR MOUNTED)",
+        "category_image_path": "",
+        "comments": "",
+        "products": [
+            {
+                "model": "DD-1",
+                "image_path": "",
+                "type": "Neoprene Isolator (Complete Set)",
+                "deflection": "-",
+                "quantity": 7,
+                "supplier": "ADIL",
+                "unit_cost": 250,
+                "total_cost": 1750,
+                "comments": ""
+            },
+            {
+                "model": "DD-2",
+                "image_path": "",
+                "type": "Neoprene Isolator (Complete Set)",
+                "deflection": "-",
+                "quantity": 19,
+                "supplier": "ADIL",
+                "unit_cost": 350,
+                "total_cost": 6650,
+                "comments": ""
+            },
+            {
+                "model": "DD-3",
+                "image_path": "",
+                "type": "Neoprene Isolator (Complete Set)",
+                "deflection": "-",
+                "quantity": 27,
+                "supplier": "ADIL",
+                "unit_cost": 550,
+                "total_cost": 14850,
+                "comments": ""
+            },
+            {
+                "model": "DD-4",
+                "image_path": "",
+                "type": "Neoprene Isolator (Complete Set)",
+                "deflection": "-",
+                "quantity": 15,
+                "supplier": "ADIL",
+                "unit_cost": 1100,
+                "total_cost": 16500,
+                "comments": ""
+            },
+            {
+                "model": "DD-5",
+                "image_path": "",
+                "type": "Neoprene Isolator (Complete Set)",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "Washer & Bolt for DD4",
+                "image_path": "",
+                "type": "-",
+                "deflection": "-",
+                "quantity": 15,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": "Rusted (Need to be refreshed)"
+            },
+            {
+                "model": "NP 16 x 12 x 0.5",
+                "image_path": "",
+                "type": "Neoprene Isolator",
+                "deflection": "-",
+                "quantity": 0,
+                "supplier": "ADIL",
+                "unit_cost": 1500,
+                "comments": ""
+            },
+            {
+                "model": "NP 16 x 12 x 1",
+                "image_path": "",
+                "type": "Neoprene Isolator",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 3000,
+                "total_cost": 3000,
+                "comments": ""
+            },
+            {
+                "model": "NP 8 x 8 x 1",
+                "image_path": "",
+                "type": "Neoprene Isolator",
+                "deflection": "-",
+                "quantity": 1,
+                "supplier": "ADIL",
+                "unit_cost": 0,
+                "comments": ""
+            },
+            {
+                "model": "NP 6 x 6 x 1",
+                "image_path": "",
+                "type": "Neoprene Isolator",
+                "deflection": "-",
+                "quantity": 27,
+                "supplier": "ADIL",
+                "unit_cost": 800,
+                "total_cost": 21600,
+                "comments": ""
+            },
+            {
+                "model": "NP 4 x 4 x 1",
+                "image_path": "",
+                "type": "Neoprene Isolator",
+                "deflection": "-",
+                "quantity": 12,
+                "supplier": "ADIL",
+                "unit_cost": 300,
+                "total_cost": 3600,
+                "comments": ""
+            }
+        ]
+    }
+]
