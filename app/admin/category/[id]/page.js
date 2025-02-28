@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import api from '@/utils/axiosInstance';
-import { FaChevronCircleLeft, FaTrash } from 'react-icons/fa';
+import { FaChevronCircleLeft, FaHome, FaTrash } from 'react-icons/fa';
 import Nav from '../../components/Nav';
 import { useAdminAuth } from '@/utils/checkAuth';
 
@@ -47,7 +47,7 @@ const CategoryPage = () => {
         model: '',
         type: '',
         deflection: '',
-        quantity: '',
+        quantity: 0,
         supplier: '',
         unit_cost: '',
         comments: '',
@@ -145,7 +145,7 @@ const CategoryPage = () => {
     };
 
     // ✅ Handle Image Upload
-    const handleImageUpload = async (e, isEditing = false, usePlaceholder = false) => {
+    const handleImageUpload = async (e, isEditing, usePlaceholder) => {
         setIsUploading(true);
 
         if (usePlaceholder) {
@@ -279,7 +279,7 @@ const CategoryPage = () => {
             model: '',
             type: '',
             deflection: '',
-            quantity: '',
+            quantity: 0,
             supplier: '',
             unit_cost: '',
             comments: '',
@@ -303,9 +303,6 @@ const CategoryPage = () => {
 
         if (!product.model.trim()) validationErrors.model = "Model is required.";
         if (!product.type.trim()) validationErrors.type = "Type is required.";
-        if (!product.quantity || isNaN(product.quantity) || product.quantity <= 0)
-            validationErrors.quantity = "Valid quantity is required.";
-        if (!product.supplier.trim()) validationErrors.supplier = "Supplier is required.";
         if (!product.unit_cost || isNaN(product.unit_cost) || product.unit_cost <= 0)
             validationErrors.unit_cost = "Valid unit cost is required.";
 
@@ -334,8 +331,8 @@ const CategoryPage = () => {
         <div className='min-h-screen bg-white'>
             <Nav />
 
-            <div className="container mx-auto mt-4 pb-40 px-6 text-sm">
-                <button onClick={() => router.back()} className='text-xl text-gray-600 flex gap-2 items-center mb-2'>
+            <div className="container mx-auto mt-4 pb-10 px-6 text-sm">
+                <button onClick={() => router.push('/admin/category')} className='text-xl text-gray-600 flex gap-2 items-center mb-2'>
                     <FaChevronCircleLeft />Back
                 </button>
                 <div className='mb-2 flex justify-between space-x-4'>
@@ -361,12 +358,17 @@ const CategoryPage = () => {
                         </button>
                     </div>
                     <div className="flex justify-end">
-                        <button
-                            onClick={() => handleAddClick()}
-                            className="bg-blue-400 px-4 py-2 rounded-lg text-white hover:bg-blue-500"
-                        >
-                            Add New Product
-                        </button>
+                        <div className='flex items-center space-x-2'>
+                            <div className='bg-gray-400 rounded-full p-2 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
+                                <FaHome className='w-5 h-5 text-white' />
+                            </div>
+                            <button
+                                onClick={() => handleAddClick()}
+                                className="bg-blue-400 px-4 py-2 rounded-lg text-white hover:bg-blue-500"
+                            >
+                                Add New Product
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -374,17 +376,17 @@ const CategoryPage = () => {
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
-                <div className="overflow-x-auto rounded-lg border border-gray-50">
+                <div className="overflow-x-auto overflow-y-auto h-[68vh] rounded-lg border border-gray-50">
                     <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                        <thead className="bg-blue-400 text-white">
+                        <thead className="bg-blue-400 text-white sticky top-[-1px]">
                             <tr>
                                 <th className="border border-gray-300 px-4 py-2">S#</th>
                                 <th className="border border-gray-300 px-4 py-2">PICTURE</th>
                                 <th className="border border-gray-300 px-4 py-2">MODEL</th>
                                 <th className="border border-gray-300 px-4 py-2">TYPE</th>
-                                <th className="border border-gray-300 px-4 py-2">Deflection (Inch)</th>
+                                <th className="border border-gray-300 px-4 py-2 min-w-10">Def (Inch)</th>
                                 <th className="border border-gray-300 px-4 py-2">QTY</th>
-                                <th className="border border-gray-300 px-4 py-2">SUPPLIER</th>
+                                <th className="border border-gray-300 px-4 py-2">VENDOR</th>
                                 <th className="border border-gray-300 px-4 py-2">Unit Cost</th>
                                 <th className="border border-gray-300 px-4 py-2">Total Cost</th>
                                 <th className="border border-gray-300 px-4 py-2">COMMENTS</th>
@@ -408,7 +410,7 @@ const CategoryPage = () => {
                                             </td>
                                             <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
                                             <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.deflection || '-'}</td>
+                                            <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
                                             <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
                                             <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
                                             <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost.toLocaleString() || '-'}</td>
@@ -429,20 +431,20 @@ const CategoryPage = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                        <td colSpan="11" className="text-center py-4 text-gray-500">
                                             No products available in this category.
                                         </td>
                                     </tr>
                                 ) : (
                                     <tr>
-                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                        <td colSpan="11" className="text-center py-4 text-gray-500">
                                             Loading...
                                         </td>
                                     </tr>
                                 )}
                         </tbody>
                         {products && products.length > 0 && (
-                            <tfoot>
+                            <tfoot className='sticky bottom-[-1px]'>
                                 <tr className="bg-gray-200 font-bold text-gray-600">
                                     <td colSpan="8" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
                                     <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
@@ -466,17 +468,15 @@ const CategoryPage = () => {
                         <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.type} />
 
                         <input type="text" name="deflection" placeholder="Deflection (Inch)" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.deflection} />
-                        {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity}</p>}
-                        <input type="number" name="quantity" required placeholder="Quantity" className="w-full mb-2 text-gray-600 border p-2" onChange={handleInputChange} value={newProduct.quantity} />
                         {errors.supplier && <p className="text-red-500 text-sm">{errors.supplier}</p>}
-                        <input type="text" name="supplier" required placeholder="Supplier" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.supplier} />
+                        <input type="text" name="supplier" required placeholder="Vendor" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.supplier} />
                         {errors.unit_cost && <p className="text-red-500 text-sm">{errors.unit_cost}</p>}
                         <input type="number" name="unit_cost" required placeholder="Unit Cost" className="w-full mb-2 text-gray-600 border p-2" onChange={handleInputChange} value={newProduct.unit_cost} />
 
                         <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.comments}></textarea>
 
                         <div className="flex space-x-2">
-                            <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false)} className="mb-2 w-2/3" />
+                            <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false, false)} className="mb-2 w-2/3" />
                             <button
                                 onClick={() => handleImageUpload(null, false, true)}
                                 className="bg-gray-300 px-2 py-1 mb-2 rounded-lg text-xs hover:bg-gray-400"
@@ -508,39 +508,34 @@ const CategoryPage = () => {
                         {errors.model && <p className="text-red-500 text-sm">{errors.model}</p>}
                         <input type="text" name="model" required placeholder="Model" className="w-full mb-2 border p-1" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.model || ''} />
 
-                        <label className="block text-sm font-semibold">Model:</label>
+                        <label className="block text-sm font-semibold">Type:</label>
                         {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
                         <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-1" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.type || ''} />
 
-                        <label className="block text-sm font-semibold">Model:</label>
+                        <label className="block text-sm font-semibold">Def (Inch):</label>
                         <input type="text" name="deflection" placeholder="Deflection (Inch)" className="w-full mb-2 border p-1"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.deflection || ''} />
 
-                        <label className="block text-sm font-semibold">Model:</label>
-                        {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity}</p>}
-                        <input type="number" name="quantity" placeholder="Quantity" className="w-full mb-2 border p-1"
-                            onChange={(e) => handleEditInputChange(e)} value={editingProduct?.quantity || ""} />
-
-                        <label className="block text-sm font-semibold">Model:</label>
+                        <label className="block text-sm font-semibold">Vendor:</label>
                         {errors.supplier && <p className="text-red-500 text-sm">{errors.supplier}</p>}
-                        <input type="text" name="supplier" placeholder="Supplier" className="w-full mb-2 border p-1"
+                        <input type="text" name="supplier" placeholder="Vendor" className="w-full mb-2 border p-1"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.supplier || ''} />
 
-                        <label className="block text-sm font-semibold">Model:</label>
+                        <label className="block text-sm font-semibold">Unit Cost:</label>
                         {errors.unit_cost && <p className="text-red-500 text-sm">{errors.unit_cost}</p>}
                         <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 border p-1"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.unit_cost || ''} />
 
-                        <label className="block text-sm font-semibold">Model:</label>
+                        <label className="block text-sm font-semibold">Comments:</label>
                         <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-1"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.comments || ''}></textarea>
 
-                        <label className="block text-sm font-semibold">Model:</label>
+                        <label className="block text-sm font-semibold">Image:</label>
                         <div className="flex space-x-2">
                             <input
                                 type="file"
                                 accept="image/*"
-                                onChange={(e) => handleImageUpload(e, true)}
+                                onChange={(e) => handleImageUpload(e, true, false)}
                                 disabled={isUploading} // ✅ Prevent selecting a new file while upload is in progress
                                 className={`mb-2 w-2/3 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                             />
@@ -584,7 +579,7 @@ const CategoryPage = () => {
                             Are you sure you want to delete <b>{selectedCategory?.category_name}</b>?
                         </p>
                         <p className="text-gray-700 mt-2">
-                            This will also delete <b>{products.length}</b> related products.
+                            This will also delete <b>{products?.length}</b> related products.
                         </p>
 
                         {/* ✅ Admin Password Input */}

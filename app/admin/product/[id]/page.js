@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { FaChevronCircleLeft, FaFilePdf, FaFileWord, FaFileImage, FaFileAlt, FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaChevronCircleLeft, FaFilePdf, FaFileWord, FaFileImage, FaFileAlt, FaMinus, FaPlus, FaTrash, FaHome } from 'react-icons/fa';
 import api from '@/utils/axiosInstance';
 import imageCompression from 'browser-image-compression';
 import Nav from '../../components/Nav';
@@ -40,6 +40,7 @@ const ProductDetail = () => {
     const [newAttachments, setNewAttachments] = useState([]);
     const [originalAttachments, setOriginalAttachments] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
+    const [stockError, setStockError] = useState("");
 
     useEffect(() => {
         const hasOpenModal = showEditModal || showDeleteModal || showStockModal || showDeleteProductModal;
@@ -214,6 +215,7 @@ const ProductDetail = () => {
 
     // ✅ Handle Save Changes for Stock
     const handleSaveStockChanges = async () => {
+        setStockError(""); // Reset error message
         console.log("📢 Editing Stock:", editingStock); // ✅ Debugging
 
         if (!editingStock || !editingStock._id) {
@@ -265,9 +267,11 @@ const ProductDetail = () => {
                 setIsEditing(false);
             } else {
                 console.error("❌ Error updating stock:", response.data.message);
+                setStockError(response.data.message);
             }
         } catch (error) {
             console.error("🚨 Error updating stock:", error);
+            setStockError("Error updating stock.");
         }
     };
 
@@ -418,6 +422,7 @@ const ProductDetail = () => {
         setShowStockModal(true);
         setStockTransaction({ quantity: '', description: '', attachments: [] });
         setSelectedFiles([]);
+        setStockError("");
     };
 
     // ✅ Handle Stock Modal Close - Remove Unsaved Attachments
@@ -469,6 +474,7 @@ const ProductDetail = () => {
 
     // ✅ Handle Add Stock Transaction
     const handleAddStockTransaction = async () => {
+        setError(""); // Reset error message
         if (!stockTransaction.quantity) {
             alert("Please enter quantity.");
             return;
@@ -503,12 +509,22 @@ const ProductDetail = () => {
 
                 setShowStockModal(false);
             } else {
-                console.error("❌ Error adding stock:", response.data.message);
+                console.log("❌ Error adding stock:", response.data.message);
+                setStockError(response.data.message);
             }
         } catch (error) {
-            console.error("🚨 Error adding stock transaction:", error);
+            console.log("🚨 Error adding stock transaction:", error);
+            setStockError(error.response.data.message || "Error adding stock transaction.");
         }
     };
+
+    const grandTotal = (stocks) => {
+        return stocks.reduce((total, stock) => {
+            const stockTotal = (Number(stock.quantity) * Number(stock.unit_cost)) || 0;
+            return total + (stock.stock_type === "Stock Out" ? -stockTotal : stockTotal);
+        }, 0);
+    };
+
 
     // ✅ Loading State
     if (!isLoaded || !product) {
@@ -534,19 +550,24 @@ const ProductDetail = () => {
 
             {product ?
                 <div className="container mx-auto p-6">
-                    <button onClick={() => router.back()} className='text-xl text-gray-600 flex gap-2 items-center mb-6'>
+                    <button onClick={() => router.back()} className='text-xl text-gray-600 flex gap-2 items-center mb-2'>
                         <FaChevronCircleLeft />Back
                     </button>
                     <div className="flex gap-8 relative">
-                        <button onClick={() => handleDeleteProductClick()} className="bg-red-500 absolute flex items-center right-0 top-0 px-3 py-2 rounded-lg text-white">
-                            <FaTrash className='mr-3' /><span>Delete Product</span>
-                        </button>
+                        <div className='absolute right-0 top-0 flex items-center space-x-2'>
+                            <div className='bg-gray-400 rounded-full p-2 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
+                                <FaHome className='w-5 h-5 text-white' />
+                            </div>
+                            <button onClick={() => handleDeleteProductClick()} className="bg-red-500 flex items-center px-3 py-2 rounded-lg text-white">
+                                <FaTrash className='mr-3' /><span>Delete Product</span>
+                            </button>
+                        </div>
                         <Image
                             src={product.image_path || '/images/placeholder.png'}
                             alt={product.model}
-                            width={200}
-                            height={200}
-                            className="rounded-lg"
+                            width={320}
+                            height={300}
+                            className="rounded-lg object-contain w-72 h-60"
                             priority // Ensures it loads fast
                             onError={(e) => e.target.src = '/images/placeholder.png'}
                         />
@@ -579,14 +600,15 @@ const ProductDetail = () => {
                     </div>
 
                     {/* ✅ Stock Data Table with Actions */}
-                    <div className="overflow-x-auto mt-4">
+                    <div className="overflow-x-auto overflow-y-auto h-[55vh] mt-4">
                         <table className="table-auto w-full text-left border-collapse border border-gray-200">
-                            <thead className="bg-gray-100 text-gray-700">
+                            <thead className="bg-gray-100 text-gray-700 sticky top-0">
                                 <tr>
                                     <th className="border border-gray-200 px-4 py-2">Date</th>
                                     <th className="border border-gray-200 px-4 py-2">Type</th>
                                     <th className="border border-gray-200 px-4 py-2">Quantity</th>
                                     <th className="border border-gray-200 px-4 py-2">Unit Cost</th>
+                                    <th className='border border-gray-200 px-4 py-2'>Total Cost</th>
                                     <th className="border border-gray-200 px-4 py-2">Description</th>
                                     <th className="border border-gray-200 px-4 py-2">Attachments</th>
                                     <th className="border border-gray-200 px-4 py-2 text-center">Actions</th>
@@ -608,10 +630,13 @@ const ProductDetail = () => {
                                             <td className="border border-gray-200 px-4 py-2 text-gray-700">
                                                 {stock.unit_cost ? `${stock.unit_cost}` : "-"} {/* ✅ NEW FIELD */}
                                             </td>
+                                            <td className="border border-gray-200 px-4 py-2 text-gray-700">
+                                                {stock.stock_type === "Stock Out" ? (Number(stock.quantity) * Number(stock.unit_cost) * -1) : (Number(stock.quantity) * Number(stock.unit_cost))} {/* ✅ NEW FIELD */}
+                                            </td>
                                             <td className="border border-gray-200 px-4 py-2 text-gray-700 min-w-64 whitespace-normal">
                                                 {stock.description || "--"}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2">
+                                            <td className="border border-gray-200 px-4 py-2 max-w-80 ">
                                                 {stock.attachments?.length > 0 ? (
                                                     <div className="flex flex-col gap-1">
                                                         {stock.attachments.map((url, index) => {
@@ -629,15 +654,15 @@ const ProductDetail = () => {
                                                             else if (["png", "jpg", "jpeg", "gif", "webp"].includes(extension)) FileIcon = FaFileImage;
 
                                                             return (
-                                                                <a
-                                                                    key={index}
-                                                                    href={url}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="text-blue-500 hover:underline flex items-center gap-2 break-all text-sm"
-                                                                >
-                                                                    <FileIcon className="text-lg" /> {filenameWithExt}
-                                                                </a>
+                                                                <div key={index} className='flex items-center gap-2'>
+                                                                    <FileIcon className="text-lg text-blue-500" />
+                                                                    <a
+                                                                        href={url}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="text-blue-500 hover:underline flex items-center truncate gap-2 text-sm"
+                                                                    >{filenameWithExt}</a>
+                                                                </div>
                                                             );
                                                         })}
                                                     </div>
@@ -657,12 +682,23 @@ const ProductDetail = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="7" className="border border-gray-200 px-4 py-4 text-center text-gray-600">
+                                        <td colSpan="8" className="border border-gray-200 px-4 py-4 text-center text-gray-600">
                                             No stock data available.
                                         </td>
                                     </tr>
                                 )}
                             </tbody>
+                            {stocks && stocks.length > 0 && (
+                                <tfoot className='sticky bottom-[-1px]'>
+                                    <tr className="bg-gray-200 font-bold text-gray-600">
+                                        <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                        <td className="border border-gray-300 py-3 px-4 text-left text-gray-800">
+                                            {grandTotal(stocks).toLocaleString()}
+                                        </td>
+                                        <td colSpan="3" className="border border-gray-300 py-3 px-4"></td>
+                                    </tr>
+                                </tfoot>
+                            )}
                         </table>
                     </div>
                 </div>
@@ -680,7 +716,7 @@ const ProductDetail = () => {
 
                         {/* ✅ Quantity (Required) */}
                         <label className="block text-gray-700">Quantity <span className="text-red-500">*</span></label>
-                        <input type="number" name="quantity" placeholder="Quantity" className="w-full mb-2 border p-2"
+                        <input type="number" name="quantity" placeholder="Quantity" max={stockType === "Stock Out" ? product.quantity : null} className="w-full mb-2 border p-2"
                             onChange={handleStockInputChange} value={stockTransaction.quantity} required />
 
                         {/* ✅ Description */}
@@ -704,6 +740,8 @@ const ProductDetail = () => {
                                 ))}
                             </div>
                         )}
+
+                        {stockError && <p className="text-red-500 text-sm mt-2">{stockError}</p>}
 
                         {/* ✅ Submit Button */}
                         <button onClick={handleAddStockTransaction}

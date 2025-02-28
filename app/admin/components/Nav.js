@@ -44,12 +44,12 @@ const Nav = () => {
                             className="flex items-center justify-between gap-2 bg-white border border-gray-300 px-1 sm:px-8 py-1 sm:py-2 rounded-full cursor-pointer shadow-sm hover:bg-gray-100 transition-all"
                         >
                             {/* User Initials - Shown on all screens */}
-                            <span className="bg-black text-white font-semibold flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-sm">
+                            <span className="bg-black text-white font-semibold flex items-center justify-center text-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-sm">
                                 {user.name?.charAt(0).toUpperCase()}
                             </span>
 
                             {/* Name & Chevron (Hidden on Mobile) */}
-                            <span className="hidden sm:flex items-center text-gray-700">
+                            <span className="hidden sm:flex items-center justify-center text-gray-700">
                                 {user.name
                                     .split(" ") // Split name into words
                                     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word

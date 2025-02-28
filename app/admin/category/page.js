@@ -272,9 +272,9 @@ const Admin = () => {
                         Add New Category
                     </button>
                 </div>
-                <div className="overflow-x-auto rounded-lg border border-gray-50">
+                <div className="overflow-x-auto overflow-y-auto h-[72vh] rounded-lg border border-gray-50">
                     <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                        <thead className="bg-blue-400 text-white text-sm">
+                        <thead className="bg-blue-400 text-white text-sm sticky top-[-1px]">
                             <tr>
                                 <th className="border border-gray-300 py-2 px-4 text-center">S#</th>
                                 <th className="border border-gray-300 py-2 px-4">Category Name</th>
@@ -334,7 +334,7 @@ const Admin = () => {
                                 )}
                         </tbody>
                         {categories && categories.length > 0 && (
-                            <tfoot>
+                            <tfoot className='sticky bottom-[-1px]'>
                                 <tr className="bg-gray-200 font-bold text-gray-600">
                                     <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
                                     <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
