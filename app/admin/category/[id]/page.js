@@ -50,7 +50,7 @@ const CategoryPage = () => {
         deflection: '',
         quantity: 0,
         supplier: '',
-        unit_cost: '',
+        unit_cost: 0,
         comments: '',
         image_path: '',
     });
@@ -282,7 +282,7 @@ const CategoryPage = () => {
             deflection: '',
             quantity: 0,
             supplier: '',
-            unit_cost: '',
+            unit_cost: 0,
             comments: '',
             image_path: '',
         });
@@ -304,8 +304,6 @@ const CategoryPage = () => {
 
         if (!product.model.trim()) validationErrors.model = "Model is required.";
         if (!product.type.trim()) validationErrors.type = "Type is required.";
-        if (!product.unit_cost || isNaN(product.unit_cost) || product.unit_cost <= 0)
-            validationErrors.unit_cost = "Valid unit cost is required.";
 
         return validationErrors;
     };
@@ -520,8 +518,7 @@ const CategoryPage = () => {
                         <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.deflection} />
                         {errors.supplier && <p className="text-red-500 text-sm">{errors.supplier}</p>}
                         <input type="text" name="supplier" required placeholder="Vendor" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.supplier} />
-                        {errors.unit_cost && <p className="text-red-500 text-sm">{errors.unit_cost}</p>}
-                        <input type="number" name="unit_cost" required placeholder="Unit Cost" className="w-full mb-2 text-gray-600 border p-2" onChange={handleInputChange} value={newProduct.unit_cost} />
+                        <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 text-gray-600 border p-2" onChange={handleInputChange} value={newProduct.unit_cost || 0} />
 
                         <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.comments}></textarea>
 
@@ -572,9 +569,8 @@ const CategoryPage = () => {
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.supplier || ''} />
 
                         <label className="block text-sm font-semibold">Unit Cost:</label>
-                        {errors.unit_cost && <p className="text-red-500 text-sm">{errors.unit_cost}</p>}
                         <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 border p-1"
-                            onChange={(e) => handleEditInputChange(e)} value={editingProduct?.unit_cost || ''} />
+                            onChange={(e) => handleEditInputChange(e)} value={editingProduct?.unit_cost || 0} />
 
                         <label className="block text-sm font-semibold">Comments:</label>
                         <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-1"

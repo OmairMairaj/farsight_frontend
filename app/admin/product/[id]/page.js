@@ -698,7 +698,7 @@ const ProductDetail = () => {
                             {stocks && stocks.length > 0 && (
                                 <tfoot className='sticky bottom-[-1px]'>
                                     <tr className="bg-gray-200 font-bold text-gray-600">
-                                        <td colSpan="2" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                        <td colSpan="2" className="border border-gray-300 py-3 px-4 text-left text-base">Total</td>
                                         <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
                                             {grandQuantityTotal(stocks).toLocaleString()}
                                         </td>
