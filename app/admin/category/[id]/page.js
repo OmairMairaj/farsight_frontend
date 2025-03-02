@@ -354,21 +354,24 @@ const CategoryPage = () => {
         <div className='min-h-screen bg-white'>
             <Nav />
 
-            <div className="container mx-auto mt-4 pb-10 px-6 text-sm">
-                <button onClick={() => router.push('/admin/category')} className='text-xl text-gray-600 flex gap-2 items-center mb-2'>
+            {/* ✅ Page Container */}
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 pb-10 text-sm mt-4">
+                <button onClick={() => router.push('/admin/category')} className='text-lg sm:text-xl text-gray-600 flex gap-2 items-center mb-2'>
                     <FaChevronCircleLeft />Back
                 </button>
-                <div className='mb-2 flex justify-between space-x-4'>
+
+                {/* ✅ Category Selection */}
+                <div className='flex flex-col sm:flex-row sm:justify-between items-center mb-4'>
                     {/* ✅ Category Selection Dropdown */}
-                    <div className="text-center flex items-center">
-                        <label className="text-gray-700 font-medium mr-4 text-base">Select Category:</label>
+                    <div className="flex items-center space-x-3">
+                        <label className="text-gray-700 font-medium text-base">Category:</label>
                         <select
-                            className="text-sm border border-gray-300 min-w-96 max-w-96 text-black px-4 py-2 rounded-md focus:outline-none focus:ring-0 truncate"
+                            className="border border-gray-300 px-4 py-1 text-black text-xs sm:text-sm min-w-96 max-w-96 rounded-md focus:outline-none w-48 sm:w-60 truncate"
                             value={selectedCategory?._id || ''}
                             onChange={handleCategoryChange}
                         >
                             {categories.map(category => (
-                                <option key={category._id} value={category._id} className='text-sm'>
+                                <option key={category._id} value={category._id}>
                                     {category.category_name}
                                 </option>
                             ))}
@@ -407,12 +410,12 @@ const CategoryPage = () => {
                                 <th className="border border-gray-300 px-4 py-2">Prodcut Image</th>
                                 <th className="border border-gray-300 px-4 py-2">Model</th>
                                 <th className="border border-gray-300 px-4 py-2">Type</th>
-                                <th className="border border-gray-300 px-4 py-2 min-w-10">Technical</th>
                                 <th className="border border-gray-300 px-4 py-2">Quantity</th>
                                 <th className="border border-gray-300 px-4 py-2">Vendor</th>
                                 <th className="border border-gray-300 px-4 py-2">Unit Cost</th>
                                 <th className="border border-gray-300 px-4 py-2">Total Cost</th>
-                                <th className="border border-gray-300 px-4 py-2">Comments</th>
+                                <th className="border border-gray-300 px-4 py-2 min-w-40">Comments</th>
+                                <th className="border border-gray-300 px-4 py-2 min-w-60">Technical</th>
                                 <th className="border border-gray-300 py-2 px-4 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -453,12 +456,12 @@ const CategoryPage = () => {
                                                                     </td>
                                                                     <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
                                                                     <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
                                                                     <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
                                                                     <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
                                                                     <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
                                                                     <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold">{product.comments || '-'}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-60">{product.deflection || '-'}</td>
                                                                     <td className="border border-gray-300 py-0 px-4 text-center">
                                                                         <button
                                                                             onClick={(e) => {

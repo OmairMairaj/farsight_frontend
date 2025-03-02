@@ -60,7 +60,7 @@ const Admin = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <nav className="bg-white text-black shadow-md sticky top-0">
+            {/* <nav className="bg-white text-black shadow-md sticky top-0">
                 <div className="flex mx-auto container items-center justify-between py-3 px-6">
                     <div className="flex items-center" onClick={() => router.push("/")}>
                         <img
@@ -72,13 +72,24 @@ const Admin = () => {
                         />
                     </div>
                 </div>
+            </nav> */}
+            <nav className="bg-white text-black shadow-md sticky top-0 w-full p-4">
+                <div className="flex mx-auto container items-center">
+                    <Image
+                        src="/images/farsight-logo.png"
+                        alt="Farsight Logo"
+                        width={200}
+                        height={50}
+                        className="w-48 sm:w-56 lg:w-64"
+                    />
+                </div>
             </nav>
 
             {/* ✅ Login Form */}
-            <div className="container mx-auto flex text-black w-full h-[80vh] justify-center items-center mt-4 px-6 text-sm">
-                <div className="w-1/3 min-w-72 flex flex-col justify-center items-center rounded-xl shadow-md bg-[#fdfdfd] border-2 border-blue-400 p-6">
-                    <h1 className="text-2xl font-bold mb-6 text-blue-400 font-sans">LOGIN</h1>
-                    <p className="text-gray-600 mb-4">Login to access the admin panel.</p>
+            <div className="flex justify-center text-black items-center h-[80vh] px-4">
+                <div className="w-full max-w-md bg-white shadow-md p-6 rounded-lg border border-blue-400">
+                    <h1 className="text-2xl font-bold text-center text-blue-400">LOGIN</h1>
+                    <p className="text-gray-600 text-center mb-6">Access the admin panel</p>
 
 
 
@@ -111,7 +122,7 @@ const Admin = () => {
                         {/* ✅ Login Button */}
                         <button
                             type="submit"
-                            className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${loading ? "opacity-50 cursor-not-allowed" : ""
+                            className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 w-full ${loading ? "opacity-50 cursor-not-allowed" : ""
                                 }`}
                             disabled={loading}
                             onClick={handleSubmit}

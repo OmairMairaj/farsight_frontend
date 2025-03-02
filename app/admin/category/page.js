@@ -26,6 +26,7 @@ const Admin = () => {
     });
     const [error, setError] = useState(null);
     const [isReordering, setIsReordering] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const placeholderImage = "https://res.cloudinary.com/dtgniimdc/image/upload/v1738739887/categories/tww1osnw4knfvstndywz.png";
 
     useEffect(() => {
@@ -41,6 +42,17 @@ const Admin = () => {
             document.body.style.overflow = "auto"; // Cleanup when component unmounts
         };
     }, [showAddModal, showEditModal]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 640); // Adjust threshold as needed (e.g., 640px for Tailwind's 'sm')
+        };
+
+        handleResize(); // Initial check
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // Fetch categories from the backend
     useEffect(() => {
@@ -305,14 +317,14 @@ const Admin = () => {
                 </div>
             </nav> */}
             <Nav />
-            <div className="container mx-auto mt-4 px-6 text-sm">
-                <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-3xl font-bold text-blue-400">Categories</h1>
+            <div className="container mx-auto mt-4 px-4 sm:px-6 text-sm">
+                <div className="flex justify-between items-center mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-400">Categories</h1>
                     <button
                         onClick={() => handleAddClick()}
-                        className="bg-blue-400 text-white px-6 py-2 rounded-lg hover:bg-blue-500"
+                        className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 text-sm sm:text-base"
                     >
-                        Add New Category
+                        {isMobile ? "Add New" : "Add New Category"}
                     </button>
                 </div>
 
@@ -326,18 +338,18 @@ const Admin = () => {
                                     {...provided.droppableProps}
                                     className="table-auto w-full text-left border-collapse border border-gray-300"
                                 >
-                                    <thead className="bg-blue-400 text-white text-sm sticky top-[-1px]">
+                                    <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">
                                         <tr>
-                                            <th className="border border-gray-300 py-2 px-4 text-center">S#</th>
-                                            <th className="border border-gray-300 py-2 px-4">Category Name</th>
-                                            <th className="border border-gray-300 py-2 px-4 text-center">Category Picture</th>
-                                            <th className="border border-gray-300 py-2 px-4 text-center max-w-24">No. of Products</th>
-                                            <th className="border border-gray-300 py-2 px-4 text-center">Total Cost (Rs)</th>
-                                            <th className="border border-gray-300 py-2 px-4 text-center">Comments</th>
-                                            <th className="border border-gray-300 py-2 px-4 text-center">Actions</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">S#</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Category Name</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-40">Category Picture</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-20">No. of Products</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost (Rs)</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Comments</th>
+                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className='text-xs sm:text-sm md:text-sm'>
                                         {categories ?
                                             categories.length > 0 ? (
                                                 categories.map((category, index) => (
@@ -350,23 +362,25 @@ const Admin = () => {
                                                                     }`}
                                                                 onClick={() => router.push(`/admin/category/${category._id}`)}
                                                             >
-                                                                <td className="border border-gray-300 py-0 px-4 text-center text-gray-700">{index + 1}</td>
-                                                                <td className="border border-gray-300 py-0 px-4 text-gray-700">{category.category_name}</td>
-                                                                <td className="border border-gray-300 py-1 px-4 flex items-center justify-center text-center">
-                                                                    <img
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700">{index + 1}</td>
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-gray-700 min-w-40">{category.category_name}</td>
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-0 flex items-center justify-center text-center min-w-40">
+                                                                    <Image
                                                                         src={category.category_image_path || '/images/placeholder.png'}
                                                                         alt={category.category_name}
+                                                                        width={100}
+                                                                        height={50}
                                                                         className="w-64 h-16 rounded-md flex items-center object-contain"
                                                                     />
                                                                 </td>
-                                                                <td className="border border-gray-300 py-0 px-4 text-center text-gray-700 font-semibold max-w-10">{category.products.length}</td>
-                                                                <td className="border border-gray-300 py-0 px-4 text-center text-gray-800 font-bold">
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td>
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
                                                                     {calculateCategoryTotalCost(category).toLocaleString()}
                                                                 </td>
-                                                                <td className="border border-gray-300 py-0 px-4 min-w-96 text-left text-green-700 font-semibold max-w-96 truncate-3-lines">
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-green-700 font-semibold min-w-48 max-w-48 sm:max-w-96 truncate-3-lines">
                                                                     {category.comments || '--'}
                                                                 </td>
-                                                                <td className="border border-gray-300 py-0 px-4 text-center">
+                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center">
                                                                     <button
                                                                         onClick={(e) => {
                                                                             e.stopPropagation(); // ✅ Prevent row click event from firing
@@ -397,9 +411,9 @@ const Admin = () => {
                                         {provided.placeholder}
                                     </tbody>
                                     {categories && categories.length > 0 && (
-                                        <tfoot className='sticky bottom-[-1px]'>
+                                        <tfoot className='sticky bottom-[-1px] text-xs sm:text-sm md:text-sm'>
                                             <tr className="bg-gray-200 font-bold text-gray-600">
-                                                <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                                <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
                                                 <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
                                                     {grandTotal.toLocaleString()}
                                                 </td>
@@ -418,20 +432,29 @@ const Admin = () => {
             {/* Modal for editing category */}
             {
                 showEditModal && (
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
-                            <button className="absolute top-2 right-2 text-gray-600" onClick={() => setShowEditModal(false)}>X</button>
-                            <h2 className="text-2xl text-blue-400 font-bold mb-4">Edit Category</h2>
-                            <label className="block text-gray-700 mb-1">Category Name</label>
-                            <input type="text" name="category_name" value={selectedCategory?.category_name || ''} onChange={handleInputChange} className="w-full border rounded p-2 mb-3" />
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 sm:px-0">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg sm:max-w-md relative text-gray-600 animate-fadeIn">
+                            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 px-2" onClick={() => setShowEditModal(false)}>✕</button>
+                            <h2 className="text-xl sm:text-2xl text-blue-400 font-bold mb-4">Edit Category</h2>
 
-                            <label className="block text-gray-700 mb-1">Upload Image</label>
-                            <div className="flex space-x-2">
+                            {/* Category Name */}
+                            <label className="block text-gray-700 mb-1 text-sm">Category Name</label>
+                            <input
+                                type="text"
+                                name="category_name"
+                                value={selectedCategory?.category_name || ''}
+                                onChange={handleInputChange}
+                                className="w-full border rounded p-2 mb-3 text-sm sm:text-base"
+                            />
+
+                            {/* Upload Image */}
+                            <label className="block text-gray-700 mb-1 text-sm">Upload Image</label>
+                            <div className="flex items-center space-x-2">
                                 <input
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => handleImageUpload(e, false)}
-                                    className={`w-full border rounded p-2 mb-3 cursor-pointer ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    className={`w-full border rounded p-2 mb-3 cursor-pointer text-sm sm:text-base ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     disabled={isUploading} // ✅ Prevent selecting a new file while upload is in progress
                                 />
                                 <button
@@ -442,24 +465,24 @@ const Admin = () => {
                                     Use Placeholder
                                 </button>
                             </div>
+
+                            {/* Image Preview */}
                             {imagePreview && (
-                                <div className="relative w-24 h-24">
+                                <div className="relative w-48 h-24 mb-3">
                                     {/* Delete button */}
-                                    {imagePreview != '/images/placeholder.png' ?
+                                    {imagePreview !== '/images/placeholder.png' &&
                                         <button
                                             className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
                                             onClick={() => handleRemoveImage()}
                                         >
                                             X
                                         </button>
-                                        :
-                                        null
                                     }
 
                                     {/* Image */}
                                     <img
                                         src={imagePreview}
-                                        className="h-full w-full object-cover rounded-md mb-3"
+                                        className="h-full w-full object-contain rounded-md"
                                         onError={(e) => {
                                             e.target.onerror = null;
                                             e.target.src = "/images/placeholder.png";
@@ -468,12 +491,19 @@ const Admin = () => {
                                 </div>
                             )}
 
-                            <label className="block text-gray-700 mb-1">Comments</label>
-                            <textarea name="comments" value={selectedCategory?.comments || ''} onChange={handleInputChange} className="w-full border rounded p-2 mb-3"></textarea>
+                            {/* Comments */}
+                            <label className="block text-gray-700 mb-1 text-sm">Comments</label>
+                            <textarea
+                                name="comments"
+                                value={selectedCategory?.comments || ''}
+                                onChange={handleInputChange}
+                                className="w-full border rounded p-2 mb-3 text-sm sm:text-base"
+                            ></textarea>
 
+                            {/* Error Message */}
                             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
-                            <button onClick={handleSaveChanges} disabled={isUploading} className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            <button onClick={handleSaveChanges} disabled={isUploading} className={`w-full bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 text-sm sm:text-base ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                 {isUploading ? 'Uploading...' : 'Save Changes'}
                             </button>
                         </div>
@@ -484,21 +514,30 @@ const Admin = () => {
             {/* Modal for adding new category */}
             {
                 showAddModal && (
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
-                            <button className="absolute top-2 right-2 text-gray-600" onClick={handleCloseAddModal}>X</button>
-                            <h2 className="text-2xl text-blue-400 font-bold mb-4">Add New Category</h2>
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 sm:px-0">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg sm:max-w-md relative text-gray-600 animate-fadeIn">
+                            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 px-2" onClick={handleCloseAddModal}>✕</button>
+                            <h2 className="text-xl sm:text-2xl text-blue-400 font-bold mb-4">Add New Category</h2>
 
-                            <label className="block text-gray-700 mb-1">Category Name</label>
-                            <input type="text" name="category_name" required value={newCategory.category_name} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3" />
+                            {/* Category Name */}
+                            <label className="block text-gray-700 mb-1 text-sm">Category Name</label>
+                            <input
+                                type="text"
+                                name="category_name"
+                                required
+                                value={newCategory.category_name}
+                                onChange={handleNewCategoryChange}
+                                className="w-full border rounded p-2 mb-3 text-sm sm:text-base"
+                            />
 
-                            <label className="block text-gray-700 mb-1">Upload Image</label>
-                            <div className="flex space-x-2">
+                            {/* Upload Image */}
+                            <label className="block text-gray-700 mb-1 text-sm">Upload Image</label>
+                            <div className="flex items-center space-x-2">
                                 <input
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => handleImageUpload(e, true)}
-                                    className="w-full border rounded p-2 mb-3 cursor-pointer"
+                                    className="w-full border rounded p-2 mb-3 cursor-pointer text-sm sm:text-base"
                                 />
                                 <button
                                     onClick={() => handleImageUpload(null, true, true)}
@@ -508,18 +547,23 @@ const Admin = () => {
                                     Use Placeholder
                                 </button>
                             </div>
+
+                            {/* Image Preview */}
                             {imagePreview &&
-                                <img src={imagePreview} className="h-24 w-24 object-cover rounded-md mb-3" onError={(e) => {
+                                <img src={imagePreview} className="h-24 w-32 object-contain rounded-md mb-3" onError={(e) => {
                                     e.target.onerror = null;
                                     e.target.src = '/images/placeholder.png';
                                 }} />
                             }
 
-                            <label className="block text-gray-700 mb-1">Comments</label>
-                            <textarea name="comments" value={newCategory.comments} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3"></textarea>
+                            {/* Comments */}
+                            <label className="block text-gray-700 mb-1 text-sm">Comments</label>
+                            <textarea name="comments" value={newCategory.comments} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3 text-sm sm:text-base"></textarea>
 
+                            {/* Error Message */}
                             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-                            <button onClick={handleSaveNewCategory} disabled={isUploading} className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+
+                            <button onClick={handleSaveNewCategory} disabled={isUploading} className={`w-full bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 text-sm sm:text-base ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                 {isUploading ? 'Uploading...' : 'Save Category'}
                             </button>
                         </div>
