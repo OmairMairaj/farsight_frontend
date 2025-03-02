@@ -609,41 +609,41 @@ const ProductDetail = () => {
                     {/* ✅ Stock Data Table with Actions */}
                     <div className="overflow-x-auto overflow-y-auto h-[55vh] mt-4">
                         <table className="table-auto w-full text-left border-collapse border border-gray-200">
-                            <thead className="bg-gray-100 text-gray-700 sticky top-0">
+                            <thead className="bg-gray-100 text-gray-700 sticky top-0 text-xs sm:text-sm">
                                 <tr>
-                                    <th className="border border-gray-200 px-4 py-2">Date</th>
-                                    <th className="border border-gray-200 px-4 py-2">Type</th>
-                                    <th className="border border-gray-200 px-4 py-2">Quantity</th>
-                                    <th className="border border-gray-200 px-4 py-2">Unit Cost</th>
-                                    <th className='border border-gray-200 px-4 py-2'>Total Cost</th>
-                                    <th className="border border-gray-200 px-4 py-2">Description</th>
-                                    <th className="border border-gray-200 px-4 py-2">Attachments</th>
-                                    <th className="border border-gray-200 px-4 py-2 text-center">Actions</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Date</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Type</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Qty</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4">Unit Cost</th>
+                                    <th className='border border-gray-200 py-2 px-2 sm:px-4 text-center'>Total Cost</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4">Description</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4">Attachments</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {stocks.length > 0 ? (
                                     stocks.map((stock) => (
-                                        <tr key={stock._id} className="hover:bg-gray-50">
-                                            <td className="border border-gray-200 px-4 py-2 text-gray-700">
+                                        <tr key={stock._id} className="hover:bg-gray-50 text-xs sm:text-sm">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-[88px]">
                                                 {formatDate(stock.date)}
                                             </td>
-                                            <td className={`border border-gray-200 px-4 py-2 font-semibold ${stock.stock_type === "Stock In" ? 'text-green-600' : 'text-red-600'}`}>
+                                            <td className={`border border-gray-200 py-1 px-2 sm:px-4 font-semibold min-w-[74px] ${stock.stock_type === "Stock In" ? 'text-green-600' : 'text-red-600'}`}>
                                                 {stock.stock_type}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2 text-gray-700">
+                                            <td className={`border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 text-right ${stock.stock_type === "Stock In" ? 'text-green-600' : 'text-red-600'}`}>
                                                 {`${stock.stock_type === "Stock In" ? "+" : "-"}${stock.quantity}`}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2 text-gray-700">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700">
                                                 {stock.unit_cost ? `${stock.unit_cost}` : "-"} {/* ✅ NEW FIELD */}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2 text-gray-700">
-                                                {stock.stock_type === "Stock Out" ? (Number(stock.quantity) * Number(stock.unit_cost) * -1) : (Number(stock.quantity) * Number(stock.unit_cost))} {/* ✅ NEW FIELD */}
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 text-right">
+                                                {stock.stock_type === "Stock Out" ? (Number(stock.quantity) * Number(stock.unit_cost) * -1).toLocaleString() : (Number(stock.quantity) * Number(stock.unit_cost)).toLocaleString()} {/* ✅ NEW FIELD */}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2 text-gray-700 min-w-64 whitespace-normal">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-64 whitespace-normal">
                                                 {stock.description || "--"}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2 max-w-80 ">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 max-w-40 ">
                                                 {stock.attachments?.length > 0 ? (
                                                     <div className="flex flex-col gap-1">
                                                         {stock.attachments.map((url, index) => {
@@ -662,12 +662,12 @@ const ProductDetail = () => {
 
                                                             return (
                                                                 <div key={index} className='flex items-center gap-2'>
-                                                                    <FileIcon className="text-lg text-blue-500" />
+                                                                    <FileIcon className="text-lg text-blue-500 w-10" />
                                                                     <a
                                                                         href={url}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
-                                                                        className="text-blue-500 hover:underline flex items-center truncate gap-2 text-sm"
+                                                                        className="text-blue-500 hover:underline flex items-center truncate gap-2"
                                                                     >{filenameWithExt}</a>
                                                                 </div>
                                                             );
@@ -677,7 +677,7 @@ const ProductDetail = () => {
                                                     <span>No Attachments</span>
                                                 )}
                                             </td>
-                                            <td className="border border-gray-200 px-4 py-2 text-center">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-center min-w-36">
                                                 <button onClick={() => handleEditStockClick(stock)} className="bg-blue-400 px-3 py-1 rounded text-white mr-2">
                                                     Edit
                                                 </button>
@@ -696,16 +696,16 @@ const ProductDetail = () => {
                                 )}
                             </tbody>
                             {stocks && stocks.length > 0 && (
-                                <tfoot className='sticky bottom-[-1px]'>
+                                <tfoot className='sticky bottom-[-1px] text-xs sm:text-sm'>
                                     <tr className="bg-gray-200 font-bold text-gray-600">
-                                        <td colSpan="2" className="border border-gray-300 py-3 px-4 text-left text-base">Total</td>
-                                        <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
+                                        <td colSpan="2" className="border border-gray-300 py-3 px-4 text-left">Total</td>
+                                        <td colSpan="1" className="border border-gray-300 py-3 px-4 text-right text-gray-800">
                                             {grandQuantityTotal(stocks).toLocaleString()}
                                         </td>
                                         <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
 
                                         </td>
-                                        <td className="border border-gray-300 py-3 px-4 text-left text-gray-800">
+                                        <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
                                             {grandTotal(stocks).toLocaleString()}
                                         </td>
                                         <td colSpan="3" className="border border-gray-300 py-3 px-4"></td>
@@ -790,7 +790,7 @@ const ProductDetail = () => {
                         <input
                             type="text"
                             name="unit_cost"
-                            className="w-full mb-3 border p-2 bg-gray-100 text-gray-700 cursor-not-allowed"
+                            className="w-full mb-3 border p-2"
                             onChange={handleStockEditInputChange}
                             value={editingStock.unit_cost}
                         />

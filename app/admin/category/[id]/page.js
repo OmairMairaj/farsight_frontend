@@ -26,6 +26,7 @@ const CategoryPage = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [adminPassword, setAdminPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [isMobile, setIsMobile] = useState(false);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
@@ -54,6 +55,17 @@ const CategoryPage = () => {
         comments: '',
         image_path: '',
     });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 640); // Adjust threshold as needed (e.g., 640px for Tailwind's 'sm')
+        };
+
+        handleResize(); // Initial check
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // ✅ Fetch all categories and preselect the category from URL
     useEffect(() => {
@@ -356,17 +368,41 @@ const CategoryPage = () => {
 
             {/* ✅ Page Container */}
             <div className="container mx-auto px-4 sm:px-6 md:px-8 pb-10 text-sm mt-4">
-                <button onClick={() => router.push('/admin/category')} className='text-lg sm:text-xl text-gray-600 flex gap-2 items-center mb-2'>
-                    <FaChevronCircleLeft />Back
-                </button>
+                <div className='flex items-center justify-between'>
+                    <button onClick={() => router.push('/admin/category')} className='text-lg sm:text-xl text-gray-600 flex gap-2 items-center mb-2'>
+                        <FaChevronCircleLeft />Back
+                    </button>
+                    {isMobile && (
+                        <div className="flex justify-end mb-2">
+                            <div className='flex items-center space-x-2'>
+                                <div className='bg-gray-400 rounded-full p-1 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
+                                    <FaHome className='w-4 h-4 text-white' />
+                                </div>
+                                <button
+                                    onClick={() => handleAddClick()}
+                                    className="bg-blue-400 px-2 py-1 rounded-lg text-white hover:bg-blue-500"
+                                >
+                                    Add New Product
+                                </button>
+                                <button
+                                    onClick={handleDeleteClick}
+                                    className="bg-red-500 px-2 py-1 ml-3 rounded-lg text-white flex items-center hover:bg-red-600"
+                                >
+                                    <span className='mr-2'><FaTrash /></span>Delete Category
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
 
                 {/* ✅ Category Selection */}
-                <div className='flex flex-col sm:flex-row sm:justify-between items-center mb-4'>
+                <div className='flex flex-col sm:flex-row sm:justify-between items-center mb-2'>
                     {/* ✅ Category Selection Dropdown */}
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center justify-between w-full text-xs sm:text-sm">
                         <label className="text-gray-700 font-medium text-base">Category:</label>
                         <select
-                            className="border border-gray-300 px-4 py-1 text-black text-xs sm:text-sm min-w-96 max-w-96 rounded-md focus:outline-none w-48 sm:w-60 truncate"
+                            className="border border-gray-300 px-4 py-1 text-black text-xs sm:text-sm sm:min-w-96 sm:max-w-96 rounded-md focus:outline-none w-80 sm:w-60 truncate"
                             value={selectedCategory?._id || ''}
                             onChange={handleCategoryChange}
                         >
@@ -376,26 +412,30 @@ const CategoryPage = () => {
                                 </option>
                             ))}
                         </select>
-                        <button
-                            onClick={handleDeleteClick}
-                            className="bg-red-500 px-4 py-2 ml-3 rounded-lg text-white flex items-center hover:bg-red-600"
-                        >
-                            <span className='mr-2'><FaTrash /></span>Delete Category
-                        </button>
-                    </div>
-                    <div className="flex justify-end">
-                        <div className='flex items-center space-x-2'>
-                            <div className='bg-gray-400 rounded-full p-2 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
-                                <FaHome className='w-5 h-5 text-white' />
-                            </div>
+                        {!isMobile && (
                             <button
-                                onClick={() => handleAddClick()}
-                                className="bg-blue-400 px-4 py-2 rounded-lg text-white hover:bg-blue-500"
+                                onClick={handleDeleteClick}
+                                className="bg-red-500 px-4 py-2 ml-3 rounded-lg text-white flex items-center hover:bg-red-600"
                             >
-                                Add New Product
+                                <span className='mr-2'><FaTrash /></span>Delete Category
                             </button>
-                        </div>
+                        )}
                     </div>
+                    {!isMobile && (
+                        <div className="flex justify-end text-xs sm:text-sm">
+                            <div className='flex items-center space-x-2'>
+                                <div className='bg-gray-400 rounded-full p-2 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
+                                    <FaHome className='w-5 h-5 text-white' />
+                                </div>
+                                <button
+                                    onClick={() => handleAddClick()}
+                                    className="bg-blue-400 px-4 py-2 rounded-lg text-white hover:bg-blue-500"
+                                >
+                                    Add New Product
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <h1 className="text-lg italic font-bold text-center bg-blue-400 text-white py-2 rounded-lg">
@@ -404,19 +444,19 @@ const CategoryPage = () => {
 
                 <div className="overflow-x-auto overflow-y-auto h-[68vh] rounded-lg border border-gray-50">
                     <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                        <thead className="bg-blue-400 text-white sticky top-[-1px]">
+                        <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-base">
                             <tr>
-                                <th className="border border-gray-300 px-4 py-2">S#</th>
-                                <th className="border border-gray-300 px-4 py-2">Prodcut Image</th>
-                                <th className="border border-gray-300 px-4 py-2">Model</th>
-                                <th className="border border-gray-300 px-4 py-2">Type</th>
-                                <th className="border border-gray-300 px-4 py-2">Quantity</th>
-                                <th className="border border-gray-300 px-4 py-2">Vendor</th>
-                                <th className="border border-gray-300 px-4 py-2">Unit Cost</th>
-                                <th className="border border-gray-300 px-4 py-2">Total Cost</th>
-                                <th className="border border-gray-300 px-4 py-2 min-w-40">Comments</th>
-                                <th className="border border-gray-300 px-4 py-2 min-w-60">Technical</th>
-                                <th className="border border-gray-300 py-2 px-4 text-center">Actions</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">S#</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Prodcut Image</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th>
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
+                                {!isMobile && <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-60">Technical</th>}
+                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
                             </tr>
                         </thead>
                         <DragDropContext onDragEnd={handleDragEnd}>
@@ -440,12 +480,12 @@ const CategoryPage = () => {
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
                                                                     {...provided.dragHandleProps}
-                                                                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 
+                                                                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 text-xs sm:text-sm md:text-base
                                                                 ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full items-center" : ""}`}
                                                                     onClick={() => router.push(`/admin/product/${product._id}`)}
                                                                 >
-                                                                    <td className="border border-gray-300 px-4 py-0 text-gray-700 text-center">{index + 1}</td>
-                                                                    <td className="border border-gray-300 px-4 py-0 text-center flex items-center justify-center">
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{index + 1}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center flex items-center justify-center min-w-20">
                                                                         <img
                                                                             src={product.image_path || '/images/placeholder.png'}
                                                                             alt={product.model}
@@ -454,15 +494,16 @@ const CategoryPage = () => {
                                                                             onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                                                                         />
                                                                     </td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
-                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-60">{product.deflection || '-'}</td>
-                                                                    <td className="border border-gray-300 py-0 px-4 text-center">
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-xs">{product.model}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px]">{product.type}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
+                                                                    {!isMobile &&
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center min-w-60">{product.deflection || '-'}</td>}
+                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
                                                                         <button
                                                                             onClick={(e) => {
                                                                                 e.stopPropagation(); // ✅ Prevent row click event from firing
