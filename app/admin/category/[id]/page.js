@@ -455,7 +455,7 @@ const CategoryPage = () => {
                                                                 <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
                                                                 <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
                                                                 <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost.toLocaleString() || 0}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost <= 0 ? product.unit_cost?.toLocaleString() || 0 : 0}</td>
                                                                 <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
                                                                 <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold">{product.comments || '-'}</td>
                                                                 <td className="border border-gray-300 py-0 px-4 text-center">
