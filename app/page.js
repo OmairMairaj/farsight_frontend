@@ -1,10 +1,11 @@
 
-import Home from './pages/home/page'
+// import Home from './pages/home/page'
+import Admin from "./admin/page";
 
 export default function Page() {
   return (
     <div>
-      <Home />
+      <Admin />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import api from '@/utils/axiosInstance';
 import { FaChevronCircleLeft, FaHome, FaTrash } from 'react-icons/fa';
 import Nav from '../../components/Nav';
 import { useAdminAuth } from '@/utils/checkAuth';
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const CategoryPage = () => {
     useAdminAuth(); // ✅ Check if user is logged in
@@ -327,6 +328,30 @@ const CategoryPage = () => {
             .catch(error => console.error('Error updating product:', error));
     };
 
+
+    const handleDragEnd = async (result) => {
+        if (!result.destination) return; // Ignore invalid moves
+
+        const reorderedProducts = [...products];
+        const [movedItem] = reorderedProducts.splice(result.source.index, 1);
+        reorderedProducts.splice(result.destination.index, 0, movedItem);
+
+        // ✅ Update the order property
+        const updatedProducts = reorderedProducts.map((product, index) => ({
+            ...product,
+            order: index + 1, // Assign new order
+        }));
+
+        setProducts(updatedProducts); // Update UI immediately
+
+        // ✅ Send updated order to backend
+        try {
+            await api.put('/api/product', { reorderedProducts: updatedProducts });
+        } catch (error) {
+            console.error("Error updating product order:", error);
+        }
+    };
+
     return (
         <div className='min-h-screen bg-white'>
             <Nav />
@@ -381,68 +406,93 @@ const CategoryPage = () => {
                         <thead className="bg-blue-400 text-white sticky top-[-1px]">
                             <tr>
                                 <th className="border border-gray-300 px-4 py-2">S#</th>
-                                <th className="border border-gray-300 px-4 py-2">PICTURE</th>
-                                <th className="border border-gray-300 px-4 py-2">MODEL</th>
-                                <th className="border border-gray-300 px-4 py-2">TYPE</th>
-                                <th className="border border-gray-300 px-4 py-2 min-w-10">Def (Inch)</th>
-                                <th className="border border-gray-300 px-4 py-2">QTY</th>
-                                <th className="border border-gray-300 px-4 py-2">VENDOR</th>
+                                <th className="border border-gray-300 px-4 py-2">Prodcut Image</th>
+                                <th className="border border-gray-300 px-4 py-2">Model</th>
+                                <th className="border border-gray-300 px-4 py-2">Type</th>
+                                <th className="border border-gray-300 px-4 py-2 min-w-10">Technical</th>
+                                <th className="border border-gray-300 px-4 py-2">Quantity</th>
+                                <th className="border border-gray-300 px-4 py-2">Vendor</th>
                                 <th className="border border-gray-300 px-4 py-2">Unit Cost</th>
                                 <th className="border border-gray-300 px-4 py-2">Total Cost</th>
-                                <th className="border border-gray-300 px-4 py-2">COMMENTS</th>
+                                <th className="border border-gray-300 px-4 py-2">Comments</th>
                                 <th className="border border-gray-300 py-2 px-4 text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {products ?
-                                products.length > 0 ? (
-                                    products.map((product, index) => (
-                                        <tr key={product._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/product/${product._id}`)}>
-                                            <td className="border border-gray-300 px-4 py-0 text-gray-700 text-center">{index + 1}</td>
-                                            <td className="border border-gray-300 px-4 py-0 text-center flex items-center justify-center">
-                                                <img
-                                                    src={product.image_path || '/images/placeholder.png'}
-                                                    alt={product.model}
-                                                    loading="lazy"
-                                                    className="w-20 h-20 rounded-md object-contain"
-                                                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
-                                                />
-                                            </td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost.toLocaleString() || '-'}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold">{product.comments || '-'}</td>
-                                            <td className="border border-gray-300 py-0 px-4 text-center">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation(); // ✅ Prevent row click event from firing
-                                                        handleEditClick(product);
-                                                    }}
-                                                    className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
-                                                >
-                                                    Edit
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="11" className="text-center py-4 text-gray-500">
-                                            No products available in this category.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    <tr>
-                                        <td colSpan="11" className="text-center py-4 text-gray-500">
-                                            Loading...
-                                        </td>
-                                    </tr>
+                        <DragDropContext onDragEnd={handleDragEnd}>
+                            <Droppable droppableId="products">
+                                {(provided) => (
+                                    <tbody
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                    >
+                                        {products ?
+                                            products.length > 0 ? (
+                                                products.map((product, index) => (
+                                                    <Draggable
+                                                        key={product._id}
+                                                        draggableId={product._id}
+                                                        index={index}
+                                                    >
+                                                        {(provided, snapshot) => (
+                                                            <tr
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 
+                                                                ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full items-center" : ""}`}
+                                                                onClick={() => router.push(`/admin/product/${product._id}`)}
+                                                            >
+                                                                <td className="border border-gray-300 px-4 py-0 text-gray-700 text-center">{index + 1}</td>
+                                                                <td className="border border-gray-300 px-4 py-0 text-center flex items-center justify-center">
+                                                                    <img
+                                                                        src={product.image_path || '/images/placeholder.png'}
+                                                                        alt={product.model}
+                                                                        loading="lazy"
+                                                                        className="w-20 h-20 rounded-md object-contain"
+                                                                        onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
+                                                                    />
+                                                                </td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost.toLocaleString() || '-'}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                                                <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold">{product.comments || '-'}</td>
+                                                                <td className="border border-gray-300 py-0 px-4 text-center">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                                            handleEditClick(product);
+                                                                        }}
+                                                                        className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                                    >
+                                                                        Edit
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )}
+                                                    </Draggable>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="11" className="text-center py-4 text-gray-500">
+                                                        No products available in this category.
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="11" className="text-center py-4 text-gray-500">
+                                                        Loading...
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        {provided.placeholder}
+                                    </tbody>
                                 )}
-                        </tbody>
+                            </Droppable>
+                        </DragDropContext>
                         {products && products.length > 0 && (
                             <tfoot className='sticky bottom-[-1px]'>
                                 <tr className="bg-gray-200 font-bold text-gray-600">
@@ -467,7 +517,7 @@ const CategoryPage = () => {
                         {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
                         <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.type} />
 
-                        <input type="text" name="deflection" placeholder="Deflection (Inch)" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.deflection} />
+                        <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.deflection} />
                         {errors.supplier && <p className="text-red-500 text-sm">{errors.supplier}</p>}
                         <input type="text" name="supplier" required placeholder="Vendor" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.supplier} />
                         {errors.unit_cost && <p className="text-red-500 text-sm">{errors.unit_cost}</p>}
@@ -512,8 +562,8 @@ const CategoryPage = () => {
                         {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
                         <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-1" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.type || ''} />
 
-                        <label className="block text-sm font-semibold">Def (Inch):</label>
-                        <input type="text" name="deflection" placeholder="Deflection (Inch)" className="w-full mb-2 border p-1"
+                        <label className="block text-sm font-semibold">Technical:</label>
+                        <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-1"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.deflection || ''} />
 
                         <label className="block text-sm font-semibold">Vendor:</label>

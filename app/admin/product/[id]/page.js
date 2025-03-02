@@ -525,6 +525,13 @@ const ProductDetail = () => {
         }, 0);
     };
 
+    const grandQuantityTotal = (stocks) => {
+        return stocks.reduce((total, stock) => {
+            const stockQuantity = Number(stock.quantity) || 0;
+            return total + (stock.stock_type === "Stock Out" ? -stockQuantity : stockQuantity);
+        }, 0);
+    };
+
 
     // ✅ Loading State
     if (!isLoaded || !product) {
@@ -578,7 +585,7 @@ const ProductDetail = () => {
                                     <p className="text-lg text-gray-600 mt-2"><strong>Category:</strong> {product.category_id?.category_name}</p>
                                     <p className="text-lg text-gray-600 mt-2"><strong>Supplier:</strong> {product.supplier}</p>
                                     <p className="text-lg text-gray-600 mt-2"><strong>Type:</strong> {product.type}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Deflection:</strong> {product.deflection}</p>
+                                    <p className="text-lg text-gray-600 mt-2"><strong>Technical:</strong> {product.deflection}</p>
                                 </div>
                                 <div>
                                     <p className="text-lg text-gray-600 mt-2"><strong>Current Stock:</strong> {product.quantity.toLocaleString()}</p>
@@ -691,7 +698,13 @@ const ProductDetail = () => {
                             {stocks && stocks.length > 0 && (
                                 <tfoot className='sticky bottom-[-1px]'>
                                     <tr className="bg-gray-200 font-bold text-gray-600">
-                                        <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                        <td colSpan="2" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                        <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
+                                            {grandQuantityTotal(stocks).toLocaleString()}
+                                        </td>
+                                        <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
+
+                                        </td>
                                         <td className="border border-gray-300 py-3 px-4 text-left text-gray-800">
                                             {grandTotal(stocks).toLocaleString()}
                                         </td>

@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import api from '@/utils/axiosInstance';
 import Nav from '../components/Nav';
 import { useAdminAuth } from '@/utils/checkAuth';
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const Admin = () => {
     useAdminAuth();
@@ -24,6 +25,7 @@ const Admin = () => {
         comments: '',
     });
     const [error, setError] = useState(null);
+    const [isReordering, setIsReordering] = useState(false);
     const placeholderImage = "https://res.cloudinary.com/dtgniimdc/image/upload/v1738739887/categories/tww1osnw4knfvstndywz.png";
 
     useEffect(() => {
@@ -249,6 +251,47 @@ const Admin = () => {
         setImagePreview('');
     };
 
+
+    // ✅ Function to update category order in the backend
+    const updateCategoryOrder = async (updatedCategories) => {
+        setIsReordering(true);
+
+        try {
+            const reorderedCategories = updatedCategories.map(category => ({
+                _id: category._id,
+                order: category.order
+            }));
+
+            console.log("📤 Sending reordered categories:", reorderedCategories); // ✅ Debugging log
+
+            await api.put("/api/category", { reorderedCategories });
+
+            console.log("✅ Order updated successfully!");
+        } catch (error) {
+            console.error("🚨 Error updating order:", error.response?.data || error.message);
+        } finally {
+            setIsReordering(false);
+        }
+    };
+
+    // ✅ Handle drag end event
+    const onDragEnd = (result) => {
+        if (!result.destination) return;
+
+        const updatedCategories = [...categories];
+        const [movedCategory] = updatedCategories.splice(result.source.index, 1);
+        updatedCategories.splice(result.destination.index, 0, movedCategory);
+
+        // ✅ Update order fields
+        const reorderedCategories = updatedCategories.map((category, index) => ({
+            ...category,
+            order: index + 1,
+        }));
+
+        setCategories(reorderedCategories);
+        updateCategoryOrder(reorderedCategories);
+    };
+
     return (
         <div className='min-h-screen bg-white'>
             {/* <nav className="bg-white text-black shadow-md sticky top-0">
@@ -272,190 +315,218 @@ const Admin = () => {
                         Add New Category
                     </button>
                 </div>
+
+                {/* ✅ Drag & Drop Table */}
                 <div className="overflow-x-auto overflow-y-auto h-[72vh] rounded-lg border border-gray-50">
-                    <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                        <thead className="bg-blue-400 text-white text-sm sticky top-[-1px]">
-                            <tr>
-                                <th className="border border-gray-300 py-2 px-4 text-center">S#</th>
-                                <th className="border border-gray-300 py-2 px-4">Category Name</th>
-                                <th className="border border-gray-300 py-2 px-4 text-center">Category Picture</th>
-                                <th className="border border-gray-300 py-2 px-4 text-center max-w-24">No. of Products</th>
-                                <th className="border border-gray-300 py-2 px-4 text-center">Total Cost (Rs)</th>
-                                <th className="border border-gray-300 py-2 px-4 text-center">Comments</th>
-                                <th className="border border-gray-300 py-2 px-4 text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {categories ?
-                                categories.length > 0 ? (
-                                    categories.map((category, index) => (
-                                        <tr key={category._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/category/${category._id}`)}>
-                                            <td className="border border-gray-300 py-0 px-4 text-center text-gray-700">{index + 1}</td>
-                                            <td className="border border-gray-300 py-0 px-4 text-gray-700">{category.category_name}</td>
-                                            <td className="border border-gray-300 py-1 px-4 flex items-center justify-center text-center">
-                                                <img
-                                                    src={category.category_image_path || '/images/placeholder.png'}
-                                                    alt={category.category_name}
-                                                    className="w-64 h-16 rounded-md flex items-center object-contain"
-                                                />
-                                            </td>
-                                            <td className="border border-gray-300 py-0 px-4 text-center text-gray-700 font-semibold max-w-10">{category.products.length}</td>
-                                            <td className="border border-gray-300 py-0 px-4 text-center text-gray-800 font-bold">
-                                                {calculateCategoryTotalCost(category).toLocaleString()}
-                                            </td>
-                                            <td className="border border-gray-300 py-0 px-4 min-w-96 text-left text-green-700 font-semibold max-w-96 truncate-3-lines">
-                                                {category.comments || '--'}
-                                            </td>
-                                            <td className="border border-gray-300 py-0 px-4 text-center">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation(); // ✅ Prevent row click event from firing
-                                                        handleEditClick(category);
-                                                    }}
-                                                    className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
-                                                >
-                                                    Edit
-                                                </button>
-                                            </td>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="categories">
+                            {(provided) => (
+                                <table
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                    className="table-auto w-full text-left border-collapse border border-gray-300"
+                                >
+                                    <thead className="bg-blue-400 text-white text-sm sticky top-[-1px]">
+                                        <tr>
+                                            <th className="border border-gray-300 py-2 px-4 text-center">S#</th>
+                                            <th className="border border-gray-300 py-2 px-4">Category Name</th>
+                                            <th className="border border-gray-300 py-2 px-4 text-center">Category Picture</th>
+                                            <th className="border border-gray-300 py-2 px-4 text-center max-w-24">No. of Products</th>
+                                            <th className="border border-gray-300 py-2 px-4 text-center">Total Cost (Rs)</th>
+                                            <th className="border border-gray-300 py-2 px-4 text-center">Comments</th>
+                                            <th className="border border-gray-300 py-2 px-4 text-center">Actions</th>
                                         </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="10" className="text-center py-4 text-gray-500">
-                                            No categories found.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    <tr>
-                                        <td colSpan="10" className="text-center py-4 text-gray-500">
-                                            Loading...
-                                        </td>
-                                    </tr>
-                                )}
-                        </tbody>
-                        {categories && categories.length > 0 && (
-                            <tfoot className='sticky bottom-[-1px]'>
-                                <tr className="bg-gray-200 font-bold text-gray-600">
-                                    <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
-                                    <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
-                                        {grandTotal.toLocaleString()}
-                                    </td>
-                                    <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
-                                </tr>
-                            </tfoot>
-                        )}
-                    </table>
+                                    </thead>
+                                    <tbody>
+                                        {categories ?
+                                            categories.length > 0 ? (
+                                                categories.map((category, index) => (
+                                                    <Draggable key={category._id} draggableId={category._id} index={index}>
+                                                        {(provided, snapshot) => (
+                                                            <tr ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className={`hover:bg-gray-50 cursor-pointer ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full" : ""
+                                                                    }`}
+                                                                onClick={() => router.push(`/admin/category/${category._id}`)}
+                                                            >
+                                                                <td className="border border-gray-300 py-0 px-4 text-center text-gray-700">{index + 1}</td>
+                                                                <td className="border border-gray-300 py-0 px-4 text-gray-700">{category.category_name}</td>
+                                                                <td className="border border-gray-300 py-1 px-4 flex items-center justify-center text-center">
+                                                                    <img
+                                                                        src={category.category_image_path || '/images/placeholder.png'}
+                                                                        alt={category.category_name}
+                                                                        className="w-64 h-16 rounded-md flex items-center object-contain"
+                                                                    />
+                                                                </td>
+                                                                <td className="border border-gray-300 py-0 px-4 text-center text-gray-700 font-semibold max-w-10">{category.products.length}</td>
+                                                                <td className="border border-gray-300 py-0 px-4 text-center text-gray-800 font-bold">
+                                                                    {calculateCategoryTotalCost(category).toLocaleString()}
+                                                                </td>
+                                                                <td className="border border-gray-300 py-0 px-4 min-w-96 text-left text-green-700 font-semibold max-w-96 truncate-3-lines">
+                                                                    {category.comments || '--'}
+                                                                </td>
+                                                                <td className="border border-gray-300 py-0 px-4 text-center">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                                            handleEditClick(category);
+                                                                        }}
+                                                                        className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                                    >
+                                                                        Edit
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )}
+                                                    </Draggable>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="10" className="text-center py-4 text-gray-500">
+                                                        No categories found.
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="10" className="text-center py-4 text-gray-500">
+                                                        Loading...
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        {provided.placeholder}
+                                    </tbody>
+                                    {categories && categories.length > 0 && (
+                                        <tfoot className='sticky bottom-[-1px]'>
+                                            <tr className="bg-gray-200 font-bold text-gray-600">
+                                                <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                                <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
+                                                    {grandTotal.toLocaleString()}
+                                                </td>
+                                                <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
+                                            </tr>
+                                        </tfoot>
+                                    )}
+                                </table>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+
                 </div>
             </div>
 
             {/* Modal for editing category */}
-            {showEditModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
-                        <button className="absolute top-2 right-2 text-gray-600" onClick={() => setShowEditModal(false)}>X</button>
-                        <h2 className="text-2xl text-blue-400 font-bold mb-4">Edit Category</h2>
-                        <label className="block text-gray-700 mb-1">Category Name</label>
-                        <input type="text" name="category_name" value={selectedCategory?.category_name || ''} onChange={handleInputChange} className="w-full border rounded p-2 mb-3" />
+            {
+                showEditModal && (
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
+                            <button className="absolute top-2 right-2 text-gray-600" onClick={() => setShowEditModal(false)}>X</button>
+                            <h2 className="text-2xl text-blue-400 font-bold mb-4">Edit Category</h2>
+                            <label className="block text-gray-700 mb-1">Category Name</label>
+                            <input type="text" name="category_name" value={selectedCategory?.category_name || ''} onChange={handleInputChange} className="w-full border rounded p-2 mb-3" />
 
-                        <label className="block text-gray-700 mb-1">Upload Image</label>
-                        <div className="flex space-x-2">
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => handleImageUpload(e, false)}
-                                className={`w-full border rounded p-2 mb-3 cursor-pointer ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={isUploading} // ✅ Prevent selecting a new file while upload is in progress
-                            />
-                            <button
-                                onClick={() => handleImageUpload(null, false, true)}
-                                className="bg-gray-300 px-2 py-1 mb-3 rounded-lg text-xs hover:bg-gray-400"
-                                disabled={isUploading}
-                            >
-                                Use Placeholder
+                            <label className="block text-gray-700 mb-1">Upload Image</label>
+                            <div className="flex space-x-2">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleImageUpload(e, false)}
+                                    className={`w-full border rounded p-2 mb-3 cursor-pointer ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    disabled={isUploading} // ✅ Prevent selecting a new file while upload is in progress
+                                />
+                                <button
+                                    onClick={() => handleImageUpload(null, false, true)}
+                                    className="bg-gray-300 px-2 py-1 mb-3 rounded-lg text-xs hover:bg-gray-400"
+                                    disabled={isUploading}
+                                >
+                                    Use Placeholder
+                                </button>
+                            </div>
+                            {imagePreview && (
+                                <div className="relative w-24 h-24">
+                                    {/* Delete button */}
+                                    {imagePreview != '/images/placeholder.png' ?
+                                        <button
+                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                            onClick={() => handleRemoveImage()}
+                                        >
+                                            X
+                                        </button>
+                                        :
+                                        null
+                                    }
+
+                                    {/* Image */}
+                                    <img
+                                        src={imagePreview}
+                                        className="h-full w-full object-cover rounded-md mb-3"
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = "/images/placeholder.png";
+                                        }}
+                                    />
+                                </div>
+                            )}
+
+                            <label className="block text-gray-700 mb-1">Comments</label>
+                            <textarea name="comments" value={selectedCategory?.comments || ''} onChange={handleInputChange} className="w-full border rounded p-2 mb-3"></textarea>
+
+                            {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
+                            <button onClick={handleSaveChanges} disabled={isUploading} className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isUploading ? 'Uploading...' : 'Save Changes'}
                             </button>
                         </div>
-                        {imagePreview && (
-                            <div className="relative w-24 h-24">
-                                {/* Delete button */}
-                                {imagePreview != '/images/placeholder.png' ?
-                                    <button
-                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                                        onClick={() => handleRemoveImage()}
-                                    >
-                                        X
-                                    </button>
-                                    :
-                                    null
-                                }
-
-                                {/* Image */}
-                                <img
-                                    src={imagePreview}
-                                    className="h-full w-full object-cover rounded-md mb-3"
-                                    onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = "/images/placeholder.png";
-                                    }}
-                                />
-                            </div>
-                        )}
-
-                        <label className="block text-gray-700 mb-1">Comments</label>
-                        <textarea name="comments" value={selectedCategory?.comments || ''} onChange={handleInputChange} className="w-full border rounded p-2 mb-3"></textarea>
-
-                        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-
-                        <button onClick={handleSaveChanges} disabled={isUploading} className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                            {isUploading ? 'Uploading...' : 'Save Changes'}
-                        </button>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Modal for adding new category */}
-            {showAddModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
-                        <button className="absolute top-2 right-2 text-gray-600" onClick={handleCloseAddModal}>X</button>
-                        <h2 className="text-2xl text-blue-400 font-bold mb-4">Add New Category</h2>
+            {
+                showAddModal && (
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
+                            <button className="absolute top-2 right-2 text-gray-600" onClick={handleCloseAddModal}>X</button>
+                            <h2 className="text-2xl text-blue-400 font-bold mb-4">Add New Category</h2>
 
-                        <label className="block text-gray-700 mb-1">Category Name</label>
-                        <input type="text" name="category_name" required value={newCategory.category_name} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3" />
+                            <label className="block text-gray-700 mb-1">Category Name</label>
+                            <input type="text" name="category_name" required value={newCategory.category_name} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3" />
 
-                        <label className="block text-gray-700 mb-1">Upload Image</label>
-                        <div className="flex space-x-2">
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => handleImageUpload(e, true)}
-                                className="w-full border rounded p-2 mb-3 cursor-pointer"
-                            />
-                            <button
-                                onClick={() => handleImageUpload(null, true, true)}
-                                className="bg-gray-300 px-2 py-1 mb-3 rounded-lg text-xs hover:bg-gray-400"
-                                disabled={isUploading}
-                            >
-                                Use Placeholder
+                            <label className="block text-gray-700 mb-1">Upload Image</label>
+                            <div className="flex space-x-2">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleImageUpload(e, true)}
+                                    className="w-full border rounded p-2 mb-3 cursor-pointer"
+                                />
+                                <button
+                                    onClick={() => handleImageUpload(null, true, true)}
+                                    className="bg-gray-300 px-2 py-1 mb-3 rounded-lg text-xs hover:bg-gray-400"
+                                    disabled={isUploading}
+                                >
+                                    Use Placeholder
+                                </button>
+                            </div>
+                            {imagePreview &&
+                                <img src={imagePreview} className="h-24 w-24 object-cover rounded-md mb-3" onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/images/placeholder.png';
+                                }} />
+                            }
+
+                            <label className="block text-gray-700 mb-1">Comments</label>
+                            <textarea name="comments" value={newCategory.comments} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3"></textarea>
+
+                            {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+                            <button onClick={handleSaveNewCategory} disabled={isUploading} className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isUploading ? 'Uploading...' : 'Save Category'}
                             </button>
                         </div>
-                        {imagePreview &&
-                            <img src={imagePreview} className="h-24 w-24 object-cover rounded-md mb-3" onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = '/images/placeholder.png';
-                            }} />
-                        }
-
-                        <label className="block text-gray-700 mb-1">Comments</label>
-                        <textarea name="comments" value={newCategory.comments} onChange={handleNewCategoryChange} className="w-full border rounded p-2 mb-3"></textarea>
-
-                        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-                        <button onClick={handleSaveNewCategory} disabled={isUploading} className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                            {isUploading ? 'Uploading...' : 'Save Category'}
-                        </button>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 
