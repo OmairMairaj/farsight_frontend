@@ -425,54 +425,56 @@ const CategoryPage = () => {
                                     >
                                         {products ?
                                             products.length > 0 ? (
-                                                products.map((product, index) => (
-                                                    <Draggable
-                                                        key={product._id}
-                                                        draggableId={product._id}
-                                                        index={index}
-                                                    >
-                                                        {(provided, snapshot) => (
-                                                            <tr
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 
+                                                products.map((product, index) => {
+                                                    return (
+                                                        <Draggable
+                                                            key={product._id}
+                                                            draggableId={product._id}
+                                                            index={index}
+                                                        >
+                                                            {(provided, snapshot) => (
+                                                                <tr
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 
                                                                 ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full items-center" : ""}`}
-                                                                onClick={() => router.push(`/admin/product/${product._id}`)}
-                                                            >
-                                                                <td className="border border-gray-300 px-4 py-0 text-gray-700 text-center">{index + 1}</td>
-                                                                <td className="border border-gray-300 px-4 py-0 text-center flex items-center justify-center">
-                                                                    <img
-                                                                        src={product.image_path || '/images/placeholder.png'}
-                                                                        alt={product.model}
-                                                                        loading="lazy"
-                                                                        className="w-20 h-20 rounded-md object-contain"
-                                                                        onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
-                                                                    />
-                                                                </td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost <= 0 ? product.unit_cost?.toLocaleString() || 0 : 0}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
-                                                                <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold">{product.comments || '-'}</td>
-                                                                <td className="border border-gray-300 py-0 px-4 text-center">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation(); // ✅ Prevent row click event from firing
-                                                                            handleEditClick(product);
-                                                                        }}
-                                                                        className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
-                                                                    >
-                                                                        Edit
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )}
-                                                    </Draggable>
-                                                ))
+                                                                    onClick={() => router.push(`/admin/product/${product._id}`)}
+                                                                >
+                                                                    <td className="border border-gray-300 px-4 py-0 text-gray-700 text-center">{index + 1}</td>
+                                                                    <td className="border border-gray-300 px-4 py-0 text-center flex items-center justify-center">
+                                                                        <img
+                                                                            src={product.image_path || '/images/placeholder.png'}
+                                                                            alt={product.model}
+                                                                            loading="lazy"
+                                                                            className="w-20 h-20 rounded-md object-contain"
+                                                                            onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
+                                                                        />
+                                                                    </td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.model}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.type}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center min-w-28">{product.deflection || '-'}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">{product.supplier}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                                                    <td className="border border-gray-300 px-4 py-2 text-green-700 font-semibold">{product.comments || '-'}</td>
+                                                                    <td className="border border-gray-300 py-0 px-4 text-center">
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                                                handleEditClick(product);
+                                                                            }}
+                                                                            className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                                        >
+                                                                            Edit
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            )}
+                                                        </Draggable>
+                                                    )
+                                                })
                                             ) : (
                                                 <tr>
                                                     <td colSpan="11" className="text-center py-4 text-gray-500">
