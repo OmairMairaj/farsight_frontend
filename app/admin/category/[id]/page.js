@@ -369,26 +369,26 @@ const CategoryPage = () => {
             {/* ✅ Page Container */}
             <div className="container mx-auto px-4 sm:px-6 md:px-8 pb-10 text-sm mt-4">
                 <div className='flex items-center justify-between'>
-                    <button onClick={() => router.push('/admin/category')} className='text-lg sm:text-xl text-gray-600 flex gap-2 items-center mb-2'>
+                    <button onClick={() => router.push('/admin/category')} className='text-base sm:text-lg text-gray-600 flex gap-2 items-center mb-2'>
                         <FaChevronCircleLeft />Back
                     </button>
                     {isMobile && (
-                        <div className="flex justify-end mb-2">
+                        <div className="flex justify-end mb-2 text-xs">
                             <div className='flex items-center space-x-2'>
                                 <div className='bg-gray-400 rounded-full p-1 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
                                     <FaHome className='w-4 h-4 text-white' />
                                 </div>
                                 <button
                                     onClick={() => handleAddClick()}
-                                    className="bg-blue-400 px-2 py-1 rounded-lg text-white hover:bg-blue-500"
+                                    className="bg-blue-400 p-2 rounded-lg text-white hover:bg-blue-500"
                                 >
-                                    Add New Product
+                                    Add Product
                                 </button>
                                 <button
                                     onClick={handleDeleteClick}
-                                    className="bg-red-500 px-2 py-1 ml-3 rounded-lg text-white flex items-center hover:bg-red-600"
+                                    className="bg-red-500 p-2 ml-3 rounded-lg text-white flex items-center hover:bg-red-600"
                                 >
-                                    <span className='mr-2'><FaTrash /></span>Delete Category
+                                    Del Category
                                 </button>
                             </div>
                         </div>
@@ -399,10 +399,10 @@ const CategoryPage = () => {
                 {/* ✅ Category Selection */}
                 <div className='flex flex-col sm:flex-row sm:justify-between items-center mb-2'>
                     {/* ✅ Category Selection Dropdown */}
-                    <div className="flex items-center justify-between w-full text-xs sm:text-sm">
-                        <label className="text-gray-700 font-medium text-base">Category:</label>
+                    <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto text-xs sm:text-sm">
+                        <label className="text-gray-700 font-medium text-sm sm:text-base mr-2">Category:</label>
                         <select
-                            className="border border-gray-300 px-4 py-1 text-black text-xs sm:text-sm sm:min-w-96 sm:max-w-96 rounded-md focus:outline-none w-80 sm:w-60 truncate"
+                            className="border border-gray-300 px-4 py-1 text-black text-xs sm:text-sm sm:min-w-96 sm:max-w-96 rounded-md focus:outline-none w-[65vw] sm:w-60 truncate"
                             value={selectedCategory?._id || ''}
                             onChange={handleCategoryChange}
                         >
@@ -438,153 +438,230 @@ const CategoryPage = () => {
                     )}
                 </div>
 
-                <h1 className="text-lg italic font-bold text-center bg-blue-400 text-white py-2 rounded-lg">
+                <h1 className="text-sm sm:text-base md:text-lg italic font-bold text-center bg-blue-400 text-white py-2 rounded-lg">
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
                 <div className="overflow-x-auto overflow-y-auto h-[68vh] rounded-lg border border-gray-50">
-                    <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                        <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-base">
-                            <tr>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">S#</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Prodcut Image</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th>
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
-                                {!isMobile && <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-60">Technical</th>}
-                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
-                            </tr>
-                        </thead>
+                    {isMobile ? (
+                        // ✅ Non-Draggable Table for Mobile
+                        <table className="table-auto w-full text-left border-collapse border border-gray-300">
+                            <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm">
+                                <tr>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">S#</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Prodcut Image</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-xs sm:text-sm md:text-sm">
+                                {products && products.length > 0 ? (
+                                    products.map((product, index) => (
+                                        <tr key={product._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/product/${product._id}`)}>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{index + 1}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center flex items-center justify-center min-w-[70px]">
+                                                <img
+                                                    src={product.image_path || '/images/placeholder.png'}
+                                                    alt={product.model}
+                                                    loading="lazy"
+                                                    className="w-20 h-20 rounded-md object-contain"
+                                                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
+                                                />
+                                            </td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                        handleEditClick(product);
+                                                    }}
+                                                    className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                >
+                                                    Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                            No products found.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                            {products && products.length > 0 && (
+                                <tfoot className='sticky bottom-[-1px]'>
+                                    <tr className="bg-gray-200 font-bold text-gray-600 text-xs sm:text-sm">
+                                        <td colSpan='7' className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
+                                        <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
+                                            {grandTotal.toLocaleString()}
+                                        </td>
+                                        <td colSpan="3" className="border border-gray-300 py-3 px-4"></td>
+                                    </tr>
+                                </tfoot>
+                            )}
+                        </table>
+                    ) : (
+                        // ✅ Draggable Table for Desktop
                         <DragDropContext onDragEnd={handleDragEnd}>
                             <Droppable droppableId="products">
                                 {(provided) => (
-                                    <tbody
-                                        {...provided.droppableProps}
+                                    <table
                                         ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        className="table-auto w-full text-left border-collapse border border-gray-300"
                                     >
-                                        {products ?
-                                            products.length > 0 ? (
-                                                products.map((product, index) => {
-                                                    return (
-                                                        <Draggable
-                                                            key={product._id}
-                                                            draggableId={product._id}
-                                                            index={index}
-                                                        >
-                                                            {(provided, snapshot) => (
-                                                                <tr
-                                                                    ref={provided.innerRef}
-                                                                    {...provided.draggableProps}
-                                                                    {...provided.dragHandleProps}
-                                                                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 text-xs sm:text-sm md:text-base
+                                        <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm">
+                                            <tr>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">S#</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Prodcut Image</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-60">Technical</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {products ?
+                                                products.length > 0 ? (
+                                                    products.map((product, index) => {
+                                                        return (
+                                                            <Draggable
+                                                                key={product._id}
+                                                                draggableId={product._id}
+                                                                index={index}
+                                                            >
+                                                                {(provided, snapshot) => (
+                                                                    <tr
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                        className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 text-xs sm:text-sm md:text-sm
                                                                 ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full items-center" : ""}`}
-                                                                    onClick={() => router.push(`/admin/product/${product._id}`)}
-                                                                >
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{index + 1}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center flex items-center justify-center min-w-20">
-                                                                        <img
-                                                                            src={product.image_path || '/images/placeholder.png'}
-                                                                            alt={product.model}
-                                                                            loading="lazy"
-                                                                            className="w-20 h-20 rounded-md object-contain"
-                                                                            onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
-                                                                        />
-                                                                    </td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-xs">{product.model}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px]">{product.type}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
-                                                                    {!isMobile &&
-                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center min-w-60">{product.deflection || '-'}</td>}
-                                                                    <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
-                                                                        <button
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation(); // ✅ Prevent row click event from firing
-                                                                                handleEditClick(product);
-                                                                            }}
-                                                                            className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
-                                                                        >
-                                                                            Edit
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            )}
-                                                        </Draggable>
-                                                    )
-                                                })
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="11" className="text-center py-4 text-gray-500">
-                                                        No products available in this category.
+                                                                        onClick={() => router.push(`/admin/product/${product._id}`)}
+                                                                    >
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{index + 1}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center flex items-center justify-center min-w-[70px]">
+                                                                            <img
+                                                                                src={product.image_path || '/images/placeholder.png'}
+                                                                                alt={product.model}
+                                                                                loading="lazy"
+                                                                                className="w-20 h-20 rounded-md object-contain"
+                                                                                onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
+                                                                            />
+                                                                        </td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center min-w-60">{product.deflection || '-'}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
+                                                                            <button
+                                                                                onClick={(e) => {
+                                                                                    e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                                                    handleEditClick(product);
+                                                                                }}
+                                                                                className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                                            >
+                                                                                Edit
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                )}
+                                                            </Draggable>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="11" className="text-center py-4 text-gray-500">
+                                                            No products available in this category.
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="11" className="text-center py-4 text-gray-500">
+                                                            Loading...
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                        </tbody>
+                                        {products && products.length > 0 && (
+                                            <tfoot className='sticky bottom-[-1px]'>
+                                                <tr className="bg-gray-200 font-bold text-gray-600">
+                                                    <td colSpan='7' className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
+                                                    <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
+                                                        {grandTotal.toLocaleString()}
                                                     </td>
+                                                    <td colSpan="3" className="border border-gray-300 py-3 px-4"></td>
                                                 </tr>
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="11" className="text-center py-4 text-gray-500">
-                                                        Loading...
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        {provided.placeholder}
-                                    </tbody>
+                                            </tfoot>
+                                        )}
+                                    </table>
                                 )}
                             </Droppable>
                         </DragDropContext>
-                        {products && products.length > 0 && (
-                            <tfoot className='sticky bottom-[-1px]'>
-                                <tr className="bg-gray-200 font-bold text-gray-600">
-                                    <td colSpan="8" className="border border-gray-300 py-3 px-4 text-left text-base">Total Cost (Rs)</td>
-                                    <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
-                                        {grandTotal.toLocaleString()}
-                                    </td>
-                                    <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
-                                </tr>
-                            </tfoot>
-                        )}
-                    </table>
+                    )}
                 </div>
             </div>
             {showAddModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
-                        <h2 className="text-xl font-bold mb-4 text-blue-400">Add New Product</h2>
-                        <button className="absolute top-2 right-2 text-gray-600" onClick={() => setShowAddModal(false)}>X</button>
-                        {errors.model && <p className="text-red-500 text-sm">{errors.model}</p>}
-                        <input type="text" name="model" required placeholder="Model" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.model} />
-                        {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
-                        <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.type} />
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-0">
+                    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-lg sm:max-w-md relative text-gray-600 animate-fadeIn">
+                        <h2 className="text-lg sm:text-xl font-bold mb-4 text-blue-400 ">Add New Product</h2>
+                        <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 px-2" onClick={() => setShowAddModal(false)}>X</button>
 
-                        <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.deflection} />
-                        {errors.supplier && <p className="text-red-500 text-sm">{errors.supplier}</p>}
-                        <input type="text" name="supplier" required placeholder="Vendor" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.supplier} />
-                        <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 text-gray-600 border p-2" onChange={handleInputChange} value={newProduct.unit_cost || 0} />
+                        {errors.model && <p className="text-red-500 text-xs sm:text-sm">{errors.model}</p>}
+                        <input type="text" name="model" required placeholder="Model" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={handleInputChange} value={newProduct.model} />
 
-                        <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-2" onChange={handleInputChange} value={newProduct.comments}></textarea>
+                        {errors.type && <p className="text-red-500 text-xs sm:text-sm">{errors.type}</p>}
+                        <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={handleInputChange} value={newProduct.type} />
 
-                        <div className="flex space-x-2">
-                            <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false, false)} className="mb-2 w-2/3" />
+                        <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={handleInputChange} value={newProduct.deflection} />
+
+                        {errors.supplier && <p className="text-red-500 text-xs sm:text-sm">{errors.supplier}</p>}
+                        <input type="text" name="supplier" required placeholder="Vendor" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={handleInputChange} value={newProduct.supplier} />
+
+                        <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 text-gray-600 border p-2 text-sm sm:text-base" onChange={handleInputChange} value={newProduct.unit_cost || 0} />
+
+                        <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={handleInputChange} value={newProduct.comments}></textarea>
+
+                        <div className="flex items-center space-x-2">
+                            <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false, false)} className="w-full sm:w-2/3 border p-2 text-sm sm:text-base" />
                             <button
                                 onClick={() => handleImageUpload(null, false, true)}
-                                className="bg-gray-300 px-2 py-1 mb-2 rounded-lg text-xs hover:bg-gray-400"
+                                className="bg-gray-300 px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-gray-400"
                                 disabled={isUploading}
                             >
                                 Use Placeholder
                             </button>
                         </div>
-                        {imagePreview && <img src={imagePreview} className="w-20 h-20 mb-2" onError={(e) => {
+                        {imagePreview && <img src={imagePreview} className="w-20 h-20 sm:w-24 sm:h-24 rounded-md object-contain" onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = '/images/placeholder.png';
                         }} />}
 
                         <button onClick={handleAddProduct} disabled={isUploading}
-                            className={`bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            className={`w-full bg-blue-400 text-white px-4 py-2 mt-2 rounded-lg hover:bg-blue-500 text-sm sm:text-base ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             {isUploading ? 'Uploading...' : 'Add Product'}
                         </button>
                     </div>
@@ -592,48 +669,48 @@ const CategoryPage = () => {
             )}
             {/* ✅ Edit Product Modal */}
             {showEditModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative text-gray-600">
-                        <h2 className="text-xl font-bold mb-4 text-blue-400">Edit Product</h2>
-                        <button className="absolute top-2 right-2 text-gray-600" onClick={() => setShowEditModal(false)}>X</button>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-0">
+                    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-lg sm:max-w-md relative text-gray-600 animate-fadeIn">
+                        <h2 className="text-lg sm:text-xl font-bold mb-4 text-blue-400">Edit Product</h2>
+                        <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 px-2" onClick={() => setShowEditModal(false)}>X</button>
 
-                        <label className="block text-sm font-semibold">Model:</label>
-                        {errors.model && <p className="text-red-500 text-sm">{errors.model}</p>}
-                        <input type="text" name="model" required placeholder="Model" className="w-full mb-2 border p-1" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.model || ''} />
+                        <label className="block text-xs sm:text-sm font-semibold">Model:</label>
+                        {errors.model && <p className="text-red-500 text-xs sm:text-sm">{errors.model}</p>}
+                        <input type="text" name="model" required placeholder="Model" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.model || ''} />
 
-                        <label className="block text-sm font-semibold">Type:</label>
-                        {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
-                        <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-1" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.type || ''} />
+                        <label className="block text-xs sm:text-sm font-semibold">Type:</label>
+                        {errors.type && <p className="text-red-500 text-xs sm:text-sm">{errors.type}</p>}
+                        <input type="text" name="type" required placeholder="Type" className="w-full mb-2 border p-2 text-sm sm:text-base" onChange={(e) => handleEditInputChange(e)} value={editingProduct?.type || ''} />
 
-                        <label className="block text-sm font-semibold">Technical:</label>
-                        <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-1"
+                        <label className="block text-xs sm:text-sm font-semibold">Technical:</label>
+                        <input type="text" name="deflection" placeholder="Technical" className="w-full mb-2 border p-2 text-sm sm:text-base"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.deflection || ''} />
 
-                        <label className="block text-sm font-semibold">Vendor:</label>
-                        {errors.supplier && <p className="text-red-500 text-sm">{errors.supplier}</p>}
-                        <input type="text" name="supplier" placeholder="Vendor" className="w-full mb-2 border p-1"
+                        <label className="block text-xs sm:text-sm font-semibold">Vendor:</label>
+                        {errors.supplier && <p className="text-red-500 text-xs sm:text-sm">{errors.supplier}</p>}
+                        <input type="text" name="supplier" placeholder="Vendor" className="w-full mb-2 border p-2 text-sm sm:text-base"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.supplier || ''} />
 
-                        <label className="block text-sm font-semibold">Unit Cost:</label>
-                        <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 border p-1"
+                        <label className="block text-xs sm:text-sm font-semibold">Unit Cost:</label>
+                        <input type="number" name="unit_cost" placeholder="Unit Cost" className="w-full mb-2 border p-2 text-sm sm:text-base"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.unit_cost || 0} />
 
-                        <label className="block text-sm font-semibold">Comments:</label>
-                        <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-1"
+                        <label className="block text-xs sm:text-sm font-semibold">Comments:</label>
+                        <textarea name="comments" placeholder="Comments" className="w-full mb-2 border p-2 text-sm sm:text-base"
                             onChange={(e) => handleEditInputChange(e)} value={editingProduct?.comments || ''}></textarea>
 
-                        <label className="block text-sm font-semibold">Image:</label>
-                        <div className="flex space-x-2">
+                        <label className="block text-xs sm:text-sm font-semibold">Image:</label>
+                        <div className="flex items-center space-x-2">
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => handleImageUpload(e, true, false)}
                                 disabled={isUploading} // ✅ Prevent selecting a new file while upload is in progress
-                                className={`mb-2 w-2/3 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`w-full sm:w-2/3 border p-2 text-sm sm:text-base ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                             />
                             <button
                                 onClick={() => handleImageUpload(null, true, true)}
-                                className="bg-gray-300 px-2 py-1 mb-2 rounded-lg text-xs hover:bg-gray-400"
+                                className="bg-gray-300 px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-gray-400"
                                 disabled={isUploading}
                             >
                                 Use Placeholder
@@ -642,12 +719,12 @@ const CategoryPage = () => {
 
                         {/* Show Image Preview */}
                         {imagePreview ? (
-                            <img src={imagePreview} className="w-20 h-20 mb-2 rounded-md object-cover" alt="Product preview" onError={(e) => {
+                            <img src={imagePreview} className="w-20 h-20 sm:w-24 sm:h-24 rounded-md object-contain" alt="Product preview" onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.src = '/images/placeholder.png';
                             }} />
                         ) : (
-                            <img src={editingProduct?.image_path || '/images/placeholder.png'} className="w-20 h-20 mb-2 rounded-md object-cover" alt="Existing product image" onError={(e) => {
+                            <img src={editingProduct?.image_path || '/images/placeholder.png'} className="w-20 h-20 sm:w-24 sm:h-24 rounded-md object-contain" alt="Existing product image" onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.src = '/images/placeholder.png';
                             }} />
@@ -655,8 +732,7 @@ const CategoryPage = () => {
 
                         <button onClick={handleEditProduct}
                             disabled={isUploading}
-                            className={`px-4 py-2 rounded-lg ${isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-400 text-white hover:bg-blue-500'}`}
-                        >
+                            className={`w-full bg-blue-400 text-white px-4 py-2 mt-2 rounded-lg hover:bg-blue-500 text-sm sm:text-base ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             {isUploading ? "Uploading..." : "Save Changes"}
                         </button>
                     </div>
@@ -664,35 +740,35 @@ const CategoryPage = () => {
             )}
             {/* ✅ Delete Confirmation Modal */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-gray-600 text-center relative">
-                        <h2 className="text-xl font-bold mb-4 text-red-500">Confirm Delete?</h2>
-                        <p className="text-gray-700">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-0">
+                    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-lg sm:max-w-md relative text-gray-600 text-center animate-fadeIn">
+                        <h2 className="text-lg sm:text-xl font-bold mb-4 text-red-500">Confirm Delete?</h2>
+                        <p className="text-gray-700 text-sm sm:text-base">
                             Are you sure you want to delete <b>{selectedCategory?.category_name}</b>?
                         </p>
-                        <p className="text-gray-700 mt-2">
+                        <p className="text-gray-700 mt-2 text-sm sm:text-base">
                             This will also delete <b>{products?.length}</b> related products.
                         </p>
 
                         {/* ✅ Admin Password Input */}
-                        <label className="block text-left text-gray-700 font-semibold mt-4">
+                        <label className="block text-left text-gray-700 font-semibold mt-4 text-sm sm:text-base">
                             Admin Password:
                         </label>
                         <input
                             type="password"
                             placeholder="Enter admin password"
-                            className="w-full mt-2 px-4 py-2 border border-gray-300 rounded"
+                            className="w-full mt-2 px-4 py-2 border border-gray-300 rounded text-sm sm:text-base"
                             value={adminPassword}
                             onChange={(e) => setAdminPassword(e.target.value)}
                         />
 
                         {/* ✅ Show Error Message */}
-                        {passwordError && <p className="text-red-500 text-sm mt-2">{passwordError}</p>}
+                        {passwordError && <p className="text-red-500 text-xs sm:text-sm mt-2">{passwordError}</p>}
 
                         {/* ✅ Delete & Cancel Buttons */}
-                        <div className="mt-4 flex justify-center">
+                        <div className="mt-4 flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
                             <button
-                                className={`bg-red-500 px-4 py-2 text-white rounded-lg mr-2 ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`bg-red-500 px-4 py-2 text-white rounded-lg text-sm sm:text-base ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 onClick={handleConfirmDelete}
                                 disabled={isDeleting}
                             >
@@ -700,7 +776,7 @@ const CategoryPage = () => {
                             </button>
 
                             <button
-                                className="bg-gray-400 px-4 py-2 text-white rounded-lg"
+                                className="bg-gray-400 px-4 py-2 text-white rounded-lg text-sm sm:text-base"
                                 onClick={() => setShowDeleteModal(false)}
                             >
                                 Cancel

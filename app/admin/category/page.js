@@ -330,102 +330,177 @@ const Admin = () => {
 
                 {/* ✅ Drag & Drop Table */}
                 <div className="overflow-x-auto overflow-y-auto h-[72vh] rounded-lg border border-gray-50">
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="categories">
-                            {(provided) => (
-                                <table
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className="table-auto w-full text-left border-collapse border border-gray-300"
-                                >
-                                    <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">
-                                        <tr>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">S#</th>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Category Name</th>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-40">Category Picture</th>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-20">No. of Products</th>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost (Rs)</th>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Comments</th>
-                                            <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
+                    {isMobile ? (
+                        <table className="table-auto w-full text-left border-collapse border border-gray-300">
+                            <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">
+                                <tr>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">S#</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Category Name</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-40">Category Picture</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-20">No. of Products</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost (Rs)</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Comments</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-xs sm:text-sm md:text-sm">
+                                {categories ? categories.length > 0 ? (
+                                    categories.map((category, index) => (
+                                        <tr key={category._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/category/${category._id}`)}>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700">{index + 1}</td>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-gray-700 min-w-40">{category.category_name}</td>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-0 flex items-center justify-center text-center min-w-40">
+                                                <Image
+                                                    src={category.category_image_path || '/images/placeholder.png'}
+                                                    alt={category.category_name}
+                                                    width={100}
+                                                    height={50}
+                                                    className="w-64 h-16 rounded-md flex items-center object-contain"
+                                                />
+                                            </td>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
+                                                {calculateCategoryTotalCost(category).toLocaleString()}
+                                            </td>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-green-700 font-semibold min-w-48 max-w-48 sm:max-w-96 truncate-3-lines">
+                                                {category.comments || '--'}
+                                            </td>
+                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                        handleEditClick(category);
+                                                    }}
+                                                    className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                >
+                                                    Edit
+                                                </button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody className='text-xs sm:text-sm md:text-sm'>
-                                        {categories ?
-                                            categories.length > 0 ? (
-                                                categories.map((category, index) => (
-                                                    <Draggable key={category._id} draggableId={category._id} index={index}>
-                                                        {(provided, snapshot) => (
-                                                            <tr ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                className={`hover:bg-gray-50 cursor-pointer ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full" : ""
-                                                                    }`}
-                                                                onClick={() => router.push(`/admin/category/${category._id}`)}
-                                                            >
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700">{index + 1}</td>
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-gray-700 min-w-40">{category.category_name}</td>
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-0 flex items-center justify-center text-center min-w-40">
-                                                                    <Image
-                                                                        src={category.category_image_path || '/images/placeholder.png'}
-                                                                        alt={category.category_name}
-                                                                        width={100}
-                                                                        height={50}
-                                                                        className="w-64 h-16 rounded-md flex items-center object-contain"
-                                                                    />
-                                                                </td>
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td>
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
-                                                                    {calculateCategoryTotalCost(category).toLocaleString()}
-                                                                </td>
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-green-700 font-semibold min-w-48 max-w-48 sm:max-w-96 truncate-3-lines">
-                                                                    {category.comments || '--'}
-                                                                </td>
-                                                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation(); // ✅ Prevent row click event from firing
-                                                                            handleEditClick(category);
-                                                                        }}
-                                                                        className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
-                                                                    >
-                                                                        Edit
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )}
-                                                    </Draggable>
-                                                ))
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="10" className="text-center py-4 text-gray-500">
-                                                        No categories found.
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="10" className="text-center py-4 text-gray-500">
-                                                        Loading...
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        {provided.placeholder}
-                                    </tbody>
-                                    {categories && categories.length > 0 && (
-                                        <tfoot className='sticky bottom-[-1px] text-xs sm:text-sm md:text-sm'>
-                                            <tr className="bg-gray-200 font-bold text-gray-600">
-                                                <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
-                                                <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
-                                                    {grandTotal.toLocaleString()}
-                                                </td>
-                                                <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
-                                            </tr>
-                                        </tfoot>
-                                    )}
-                                </table>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" className="text-center py-4 text-gray-500">
+                                            No categories found.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    <tr>
+                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                            Loading...
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                            {categories && categories.length > 0 && (
+                                <tfoot className='sticky bottom-[-1px] text-xs sm:text-sm md:text-sm'>
+                                    <tr className="bg-gray-200 font-bold text-gray-600">
+                                        <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
+                                        <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
+                                            {grandTotal.toLocaleString()}
+                                        </td>
+                                        <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
+                                    </tr>
+                                </tfoot>
                             )}
-                        </Droppable>
-                    </DragDropContext>
-
+                        </table>
+                    ) : (
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="categories">
+                                {(provided) => (
+                                    <table
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        className="table-auto w-full text-left border-collapse border border-gray-300"
+                                    >
+                                        <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">
+                                            <tr>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">S#</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Category Name</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-40">Category Picture</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-20">No. of Products</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost (Rs)</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Comments</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className='text-xs sm:text-sm md:text-sm'>
+                                            {categories ?
+                                                categories.length > 0 ? (
+                                                    categories.map((category, index) => (
+                                                        <Draggable key={category._id} draggableId={category._id} index={index}>
+                                                            {(provided, snapshot) => (
+                                                                <tr ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    className={`hover:bg-gray-50 cursor-pointer ${snapshot.isDragging ? "bg-gray-200 flex flex-1 w-full" : ""
+                                                                        }`}
+                                                                    onClick={() => router.push(`/admin/category/${category._id}`)}
+                                                                >
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700">{index + 1}</td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-gray-700 min-w-40">{category.category_name}</td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-0 flex items-center justify-center text-center min-w-40">
+                                                                        <Image
+                                                                            src={category.category_image_path || '/images/placeholder.png'}
+                                                                            alt={category.category_name}
+                                                                            width={100}
+                                                                            height={50}
+                                                                            className="w-64 h-16 rounded-md flex items-center object-contain"
+                                                                        />
+                                                                    </td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
+                                                                        {calculateCategoryTotalCost(category).toLocaleString()}
+                                                                    </td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-green-700 font-semibold min-w-48 max-w-48 sm:max-w-96 truncate-3-lines">
+                                                                        {category.comments || '--'}
+                                                                    </td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center">
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation(); // ✅ Prevent row click event from firing
+                                                                                handleEditClick(category);
+                                                                            }}
+                                                                            className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+                                                                        >
+                                                                            Edit
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            )}
+                                                        </Draggable>
+                                                    ))
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                                            No categories found.
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                                            Loading...
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            {provided.placeholder}
+                                        </tbody>
+                                        {categories && categories.length > 0 && (
+                                            <tfoot className='sticky bottom-[-1px] text-xs sm:text-sm md:text-sm'>
+                                                <tr className="bg-gray-200 font-bold text-gray-600">
+                                                    <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
+                                                    <td className="border border-gray-300 py-3 px-4 text-center text-gray-800">
+                                                        {grandTotal.toLocaleString()}
+                                                    </td>
+                                                    <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
+                                                </tr>
+                                            </tfoot>
+                                        )}
+                                    </table>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    )}
                 </div>
             </div>
 

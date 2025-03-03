@@ -41,6 +41,7 @@ const ProductDetail = () => {
     const [originalAttachments, setOriginalAttachments] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [stockError, setStockError] = useState("");
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         const hasOpenModal = showEditModal || showDeleteModal || showStockModal || showDeleteProductModal;
@@ -55,6 +56,17 @@ const ProductDetail = () => {
             document.body.style.overflow = "auto"; // Cleanup when component unmounts
         };
     }, [showEditModal, showDeleteModal, showStockModal, showDeleteProductModal]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 640); // Adjust threshold as needed (e.g., 640px for Tailwind's 'sm')
+        };
+
+        handleResize(); // Initial check
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // ✅ Fetch product details from API
     useEffect(() => {
@@ -534,21 +546,12 @@ const ProductDetail = () => {
 
 
     // ✅ Loading State
-    if (!isLoaded || !product) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <h1 className="text-2xl text-gray-500">Loading....</h1>
-            </div>
-        );
+    if (!isLoaded) {
+        return <div className="bg-white flex items-center justify-center min-h-screen text-gray-500 text-lg">Loading...</div>;
     }
 
-    // ✅ Error State
     if (error || !product) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <h1 className="text-2xl text-gray-500">{error || "Product not found."}</h1>
-            </div>
-        );
+        return <div className="bg-white flex items-center justify-center min-h-screen text-gray-500 text-lg">{error || "Product not found."}</div>;
     }
 
     return (
@@ -556,58 +559,143 @@ const ProductDetail = () => {
             <Nav />
 
             {product ?
-                <div className="container mx-auto p-6">
-                    <button onClick={() => router.back()} className='text-xl text-gray-600 flex gap-2 items-center mb-2'>
-                        <FaChevronCircleLeft />Back
-                    </button>
-                    <div className="flex gap-8 relative">
-                        <div className='absolute right-0 top-0 flex items-center space-x-2'>
+                <div className="container mx-auto p-4 sm:p-6 md:p-8">
+                    <div className='flex items-center justify-between'>
+                        <button onClick={() => router.back()} className='flex items-center text-gray-600 text-sm sm:text-base'>
+                            <FaChevronCircleLeft className="w-5 h-5 mr-2" />Back
+                        </button>
+                        <div className='flex items-center space-x-2'>
                             <div className='bg-gray-400 rounded-full p-2 flex items-center justify-center shadow shadow-black hover:bg-gray-500' onClick={() => router.push('/admin/category')}>
-                                <FaHome className='w-5 h-5 text-white' />
+                                <FaHome className='w-4 h-4 text-white' />
                             </div>
-                            <button onClick={() => handleDeleteProductClick()} className="bg-red-500 flex items-center px-3 py-2 rounded-lg text-white">
+                            <button onClick={() => handleDeleteProductClick()} className="bg-red-500 flex items-center px-3 py-2 rounded-lg text-white text-xs sm:text-sm">
                                 <FaTrash className='mr-3' /><span>Delete Product</span>
                             </button>
                         </div>
-                        <Image
-                            src={product.image_path || '/images/placeholder.png'}
-                            alt={product.model}
-                            width={320}
-                            height={300}
-                            className="rounded-lg object-contain w-72 h-60"
-                            priority // Ensures it loads fast
-                            onError={(e) => e.target.src = '/images/placeholder.png'}
-                        />
-                        <div className='flex flex-col w-2/3'>
-                            <h1 className="text-3xl font-bold text-gray-800">{product.model}</h1>
-                            <div className='grid grid-cols-2'>
-                                <div>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Category:</strong> {product.category_id?.category_name}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Supplier:</strong> {product.supplier}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Type:</strong> {product.type}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Technical:</strong> {product.deflection}</p>
+                    </div>
+                    {isMobile ? (
+                        <div className="flex flex-col items-center w-full p-4">
+
+                            {/* ✅ Top Section - Image & Basic Details */}
+                            <div className="flex flex-row items-center w-full gap-4">
+
+                                {/* ✅ Left - Product Image */}
+                                <Image
+                                    src={product.image_path || '/images/placeholder.png'}
+                                    alt={product.model}
+                                    width={250}
+                                    height={180}
+                                    className="rounded-lg object-contain w-40 h-40 sm:w-48 sm:h-48"
+                                    priority
+                                    onError={(e) => e.target.src = '/images/placeholder.png'}
+                                />
+
+                                {/* ✅ Right - Product Model & Short Details */}
+                                <div className="flex flex-col w-full">
+                                    <h1 className="text-lg sm:text-2xl font-bold text-gray-800">
+                                        {product.model}
+                                    </h1>
+
+                                    {/* ✅ Short Fields in a Grid */}
+                                    <div className="mt-2 text-left space-y-2">
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Supplier:</strong> {product.supplier}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Current Stock:</strong> {product.quantity.toLocaleString()}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Total Cost:</strong> {product.unit_cost && product.quantity ? `${(product.unit_cost * product.quantity).toLocaleString()}` : 0}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Current Stock:</strong> {product.quantity.toLocaleString()}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Total Cost:</strong> {product.unit_cost && product.quantity ? `${(product.unit_cost * product.quantity).toLocaleString()}` : 0}</p>
-                                    <p className="text-lg text-gray-600 mt-2"><strong>Comments:</strong> {product.comments || 'N/A'}</p>
+                            </div>
+
+                            {/* ✅ Full-width Details Below */}
+                            <div className="flex flex-col w-full mt-4 space-y-2">
+                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                    <strong>Category:</strong> {product.category_id?.category_name}
+                                </p>
+                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                    <strong>Type:</strong> {product.type}
+                                </p>
+                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                    <strong>Technical:</strong> {product.deflection}
+                                </p>
+                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                    <strong>Comments:</strong> {product.comments || 'N/A'}
+                                </p>
+                            </div>
+
+                        </div>
+                    ) : (
+                        <div className="flex gap-8 relative my-4">
+                            {/* ✅ Desktop Layout - Image on Left, Details on Right */}
+                            <Image
+                                src={product.image_path || '/images/placeholder.png'}
+                                alt={product.model}
+                                width={300}
+                                height={200}
+                                className="rounded-lg object-contain w-1/3 max-w-xs max-h-52"
+                                priority
+                                onError={(e) => e.target.src = '/images/placeholder.png'}
+                            />
+
+                            <div className="flex flex-col w-full md:w-2/3">
+                                <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-gray-800">{product.model}</h1>
+
+                                {/* ✅ Two-column Grid */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-y-4 mt-4">
+
+                                    {/* ✅ Column 1 - Long Text Fields */}
+                                    <div className="space-y-2">
+                                        <p className="text-sm sm:text-base text-gray-600 break-words">
+                                            <strong>Category:</strong> {product.category_id?.category_name}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600 break-words">
+                                            <strong>Type:</strong> {product.type}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600 break-words">
+                                            <strong>Technical:</strong> {product.deflection}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600 break-words">
+                                            <strong>Comments:</strong> {product.comments || 'N/A'}
+                                        </p>
+                                    </div>
+
+                                    {/* ✅ Column 2 - Short Text Fields */}
+                                    <div className="space-y-2">
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Supplier:</strong> {product.supplier}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Current Stock:</strong> {product.quantity.toLocaleString()}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0}
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-600">
+                                            <strong>Total Cost:</strong> {product.unit_cost && product.quantity ? `${(product.unit_cost * product.quantity).toLocaleString()}` : 0}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className='absolute right-0 bottom-0 flex gap-4'>
-                            <button className="bg-blue-400 flex items-center px-3 py-2 rounded-lg text-white hover:bg-blue-500" onClick={() => handleStockModalOpen("Stock In")}>
-                                <FaPlus className='mr-3' /><span>Stock In</span>
-                            </button>
-                            <button className="bg-blue-400 flex items-center px-3 py-2 rounded-lg text-white hover:bg-blue-500" onClick={() => handleStockModalOpen("Stock Out")}>
-                                <FaMinus className='mr-3' /><span>Stock Out</span>
-                            </button>
-                        </div>
-
+                    )}
+                    <div className='flex gap-4 justify-end'>
+                        <button className="bg-blue-400 flex items-center px-3 py-2 rounded-lg text-white hover:bg-blue-500 text-xs sm:text-sm" onClick={() => handleStockModalOpen("Stock In")}>
+                            <FaPlus className='mr-3' /><span>Stock In</span>
+                        </button>
+                        <button className="bg-blue-400 flex items-center px-3 py-2 rounded-lg text-white hover:bg-blue-500 text-xs sm:text-sm" onClick={() => handleStockModalOpen("Stock Out")}>
+                            <FaMinus className='mr-3' /><span>Stock Out</span>
+                        </button>
                     </div>
 
                     {/* ✅ Stock Data Table with Actions */}
-                    <div className="overflow-x-auto overflow-y-auto h-[55vh] mt-4">
+                    <div className="overflow-x-auto overflow-y-auto h-[55vh] mt-2">
                         <table className="table-auto w-full text-left border-collapse border border-gray-200">
                             <thead className="bg-gray-100 text-gray-700 sticky top-0 text-xs sm:text-sm">
                                 <tr>
@@ -643,7 +731,7 @@ const ProductDetail = () => {
                                             <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-64 whitespace-normal">
                                                 {stock.description || "--"}
                                             </td>
-                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 max-w-40 ">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 max-w-40 text-xs">
                                                 {stock.attachments?.length > 0 ? (
                                                     <div className="flex flex-col gap-1">
                                                         {stock.attachments.map((url, index) => {
@@ -661,20 +749,23 @@ const ProductDetail = () => {
                                                             else if (["png", "jpg", "jpeg", "gif", "webp"].includes(extension)) FileIcon = FaFileImage;
 
                                                             return (
-                                                                <div key={index} className='flex items-center gap-2'>
-                                                                    <FileIcon className="text-lg text-blue-500 w-10" />
+                                                                <div key={index} className="flex items-center gap-1">
+                                                                    <FileIcon className="text-blue-500 w-[12px] min-w-[12px]" />
                                                                     <a
                                                                         href={url}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
-                                                                        className="text-blue-500 hover:underline flex items-center truncate gap-2"
-                                                                    >{filenameWithExt}</a>
+                                                                        className="text-blue-500 hover:underline flex-grow truncate"
+                                                                        style={{ maxWidth: "180px" }} // ✅ Ensures consistent truncation
+                                                                    >
+                                                                        {filenameWithExt}
+                                                                    </a>
                                                                 </div>
                                                             );
                                                         })}
                                                     </div>
                                                 ) : (
-                                                    <span>No Attachments</span>
+                                                    <span className="text-gray-500">No Attachments</span>
                                                 )}
                                             </td>
                                             <td className="border border-gray-200 py-1 px-2 sm:px-4 text-center min-w-36">

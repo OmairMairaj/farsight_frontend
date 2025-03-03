@@ -21,19 +21,17 @@ const Nav = () => {
     };
 
     return (
-        <nav className="bg-white text-black shadow-md sticky top-0 w-full">
-            <div className="flex mx-auto container items-center justify-between py-3 px-6">
+        <nav className="bg-white text-black shadow-md sticky top-0 w-full z-50">
+            <div className="flex items-center justify-between container mx-auto px-4 sm:px-6 py-2 sm:py-3">
                 {/* Logo - Click to go to Categories */}
                 <div className="flex items-center cursor-pointer" onClick={() => router.push("/admin/category")}>
-                    {/* <div className="flex items-center"> */}
                     <Image
                         src="/images/farsight-logo.png"
                         alt="Farsight Logo"
                         width={250}
                         height={60}
-                        className="mr-4 w-48 sm:w-64 h-12 sm:h-16"
+                        className="w-40 sm:w-52 md:w-64"
                     />
-                    {/* </div> */}
                 </div>
 
                 {/* User Menu */}
@@ -41,26 +39,26 @@ const Nav = () => {
                     <div className="relative">
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex items-center justify-between gap-2 bg-white border border-gray-300 px-1 sm:px-8 py-1 sm:py-2 rounded-full cursor-pointer shadow-sm hover:bg-gray-100 transition-all"
+                            className="flex items-center gap-2 bg-white border border-gray-300 px-1 sm:px-6 py-1 sm:py-2 rounded-full cursor-pointer shadow-sm hover:bg-gray-100 transition-all text-xs sm:text-sm"
                         >
-                            {/* User Initials - Shown on all screens */}
-                            <span className="bg-black text-white font-semibold flex items-center justify-center text-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-sm">
+                            {/* ✅ User Initials - Always visible */}
+                            <span className="bg-black text-white font-semibold flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-sm sm:text-base">
                                 {user.name?.charAt(0).toUpperCase()}
                             </span>
 
                             {/* Name & Chevron (Hidden on Mobile) */}
-                            <span className="hidden sm:flex items-center justify-center text-gray-700">
+                            <span className="hidden sm:flex items-center text-gray-700 text-xs sm:text-sm">
                                 {user.name
                                     .split(" ") // Split name into words
                                     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
                                     .join(" ")}
-                                <FaChevronDown className="ml-2 text-xs" />
+                                <FaChevronDown className="ml-2 text-xs sm:text-sm" />
                             </span>
                         </button>
 
                         {/* Dropdown Menu */}
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                            <div className="absolute right-0 mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 text-xs sm:text-sm">
                                 <button
                                     onClick={() => router.push("/admin/change-password")}
                                     className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
