@@ -319,7 +319,7 @@ const Admin = () => {
             <Nav />
             <div className="container mx-auto mt-4 px-4 sm:px-6 text-sm">
                 <div className="flex justify-between items-center mb-2">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-400">Categories</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-400">Product Portfolio</h1>
                     <button
                         onClick={() => handleAddClick()}
                         className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 text-sm sm:text-base"
@@ -335,12 +335,12 @@ const Admin = () => {
                             <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">
                                 <tr>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">S#</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Category Name</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-40">Category Picture</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-20">No. of Products</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost (Rs)</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Product Name</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-40">Product Picture</th>
+                                    {/* <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center min-w-20">No. of Products</th> */}
+                                    {/* <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost (Rs)</th> */}
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Comments</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
+                                    {/* <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th> */}
                                 </tr>
                             </thead>
                             <tbody className="text-xs sm:text-sm md:text-sm">
@@ -358,14 +358,14 @@ const Admin = () => {
                                                     className="w-64 h-16 rounded-md flex items-center object-contain"
                                                 />
                                             </td>
-                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td>
-                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
+                                            {/* <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td> */}
+                                            {/* <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
                                                 {calculateCategoryTotalCost(category).toLocaleString()}
-                                            </td>
+                                            </td> */}
                                             <td className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-green-700 font-semibold min-w-48 max-w-48 sm:max-w-96 truncate-3-lines">
                                                 {category.comments || '--'}
                                             </td>
-                                            <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center">
+                                            {/* <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center">
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation(); // ✅ Prevent row click event from firing
@@ -375,7 +375,7 @@ const Admin = () => {
                                                 >
                                                     Edit
                                                 </button>
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     ))
                                 ) : (
@@ -392,7 +392,7 @@ const Admin = () => {
                                     </tr>
                                 )}
                             </tbody>
-                            {categories && categories.length > 0 && (
+                            {/* {categories && categories.length > 0 && (
                                 <tfoot className='sticky bottom-[-1px] text-xs sm:text-sm md:text-sm'>
                                     <tr className="bg-gray-200 font-bold text-gray-600">
                                         <td colSpan="4" className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
@@ -402,7 +402,7 @@ const Admin = () => {
                                         <td colSpan="2" className="border border-gray-300 py-3 px-4"></td>
                                     </tr>
                                 </tfoot>
-                            )}
+                            )} */}
                         </table>
                     ) : (
                         <DragDropContext onDragEnd={onDragEnd}>

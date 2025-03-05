@@ -100,7 +100,7 @@ const ProductDetail = () => {
         return new Date(date).toLocaleDateString('en-GB', {
             day: '2-digit',
             month: 'short', // ✅ "Feb", "Mar", "Apr", etc.
-            year: 'numeric',
+            year: '2-digit',
         }).toUpperCase(); // ✅ Convert "Feb" -> "FEB"
     };
 
@@ -577,7 +577,7 @@ const ProductDetail = () => {
                         <div className="flex flex-col items-center w-full p-4">
 
                             {/* ✅ Top Section - Image & Basic Details */}
-                            <div className="flex flex-row items-center w-full gap-4">
+                            <div className="flex flex-row  w-full gap-4">
 
                                 {/* ✅ Left - Product Image */}
                                 <Image
@@ -585,49 +585,49 @@ const ProductDetail = () => {
                                     alt={product.model}
                                     width={250}
                                     height={180}
-                                    className="rounded-lg object-contain w-40 h-40 sm:w-48 sm:h-48"
+                                    className="rounded-lg object-contain w-24 h-24 sm:w-48 sm:h-48"
                                     priority
                                     onError={(e) => e.target.src = '/images/placeholder.png'}
                                 />
 
                                 {/* ✅ Right - Product Model & Short Details */}
                                 <div className="flex flex-col w-full">
-                                    <h1 className="text-lg sm:text-2xl font-bold text-gray-800">
+                                    <h1 className="text-sm sm:text-2xl font-bold text-gray-600">
                                         {product.model}
                                     </h1>
 
                                     {/* ✅ Short Fields in a Grid */}
                                     <div className="mt-2 text-left space-y-2">
-                                        <p className="text-sm sm:text-base text-gray-600">
+                                        {/* <p className="text-sm sm:text-base text-gray-600">
                                             <strong>Supplier:</strong> {product.supplier}
+                                        </p> */}
+                                        <p className="text-sm sm:text-base font-bold  text-green-600">
+                                            <strong className='text-gray-600'>Current Stock:</strong> {product.quantity.toLocaleString()}
                                         </p>
                                         <p className="text-sm sm:text-base text-gray-600">
-                                            <strong>Current Stock:</strong> {product.quantity.toLocaleString()}
+                                            <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0} Rs
                                         </p>
-                                        <p className="text-sm sm:text-base text-gray-600">
-                                            <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0}
-                                        </p>
-                                        <p className="text-sm sm:text-base text-gray-600">
+                                        {/* <p className="text-sm sm:text-base text-gray-600">
                                             <strong>Total Cost:</strong> {product.unit_cost && product.quantity ? `${(product.unit_cost * product.quantity).toLocaleString()}` : 0}
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </div>
                             </div>
 
                             {/* ✅ Full-width Details Below */}
                             <div className="flex flex-col w-full mt-4 space-y-2">
-                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                {/* <p className="text-sm sm:text-base text-gray-600 break-words">
                                     <strong>Category:</strong> {product.category_id?.category_name}
-                                </p>
+                                </p> */}
                                 <p className="text-sm sm:text-base text-gray-600 break-words">
                                     <strong>Type:</strong> {product.type}
                                 </p>
                                 <p className="text-sm sm:text-base text-gray-600 break-words">
                                     <strong>Technical:</strong> {product.deflection}
                                 </p>
-                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                {/* <p className="text-sm sm:text-base text-gray-600 break-words">
                                     <strong>Comments:</strong> {product.comments || 'N/A'}
-                                </p>
+                                </p> */}
                             </div>
 
                         </div>
@@ -704,7 +704,7 @@ const ProductDetail = () => {
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Qty</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4">Unit Cost</th>
                                     <th className='border border-gray-200 py-2 px-2 sm:px-4 text-center'>Total Cost</th>
-                                    <th className="border border-gray-200 py-2 px-2 sm:px-4">Description</th>
+                                    <th className="border border-gray-200 py-2 px-2 sm:px-4">Comments</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4">Attachments</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Actions</th>
                                 </tr>
@@ -765,7 +765,7 @@ const ProductDetail = () => {
                                                         })}
                                                     </div>
                                                 ) : (
-                                                    <span className="text-gray-500">No Attachments</span>
+                                                    <span className="text-gray-500">---</span>
                                                 )}
                                             </td>
                                             <td className="border border-gray-200 py-1 px-2 sm:px-4 text-center min-w-36">

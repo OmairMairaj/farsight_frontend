@@ -438,7 +438,7 @@ const CategoryPage = () => {
                     )}
                 </div>
 
-                <h1 className="text-sm sm:text-base md:text-lg italic font-bold text-center bg-blue-400 text-white py-2 rounded-lg">
+                <h1 className="text-sm sm:text-base md:text-lg italic font-bold text-center bg-blue-400 text-white py-0 sm:py-2 rounded-lg">
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
@@ -446,16 +446,16 @@ const CategoryPage = () => {
                     {isMobile ? (
                         // ✅ Non-Draggable Table for Mobile
                         <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                            <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm">
+                            <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm z-10">
                                 <tr>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">S#</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Prodcut Image</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-blue-400">S#</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-7 bg-blue-400">Product Image</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th>
+                                    {/* <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th> */}
+                                    {/* <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th> */}
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
                                 </tr>
@@ -464,22 +464,22 @@ const CategoryPage = () => {
                                 {products && products.length > 0 ? (
                                     products.map((product, index) => (
                                         <tr key={product._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/product/${product._id}`)}>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{index + 1}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center flex items-center justify-center min-w-[70px]">
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-white text-gray-700 text-center">{index + 1}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-7 bg-white text-center flex items-center justify-center min-w-[70px]">
                                                 <img
                                                     src={product.image_path || '/images/placeholder.png'}
                                                     alt={product.model}
                                                     loading="lazy"
-                                                    className="w-20 h-20 rounded-md object-contain"
+                                                    className="w-20 rounded-md object-contain"
                                                     onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                                                 />
                                             </td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4  text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                            {/* <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td> */}
+                                            {/* <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td> */}
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
                                                 <button
@@ -502,7 +502,7 @@ const CategoryPage = () => {
                                     </tr>
                                 )}
                             </tbody>
-                            {products && products.length > 0 && (
+                            {/* {products && products.length > 0 && (
                                 <tfoot className='sticky bottom-[-1px]'>
                                     <tr className="bg-gray-200 font-bold text-gray-600 text-xs sm:text-sm">
                                         <td colSpan='7' className="border border-gray-300 py-3 px-4 text-left">Total Cost (Rs)</td>
@@ -512,7 +512,7 @@ const CategoryPage = () => {
                                         <td colSpan="3" className="border border-gray-300 py-3 px-4"></td>
                                     </tr>
                                 </tfoot>
-                            )}
+                            )} */}
                         </table>
                     ) : (
                         // ✅ Draggable Table for Desktop
@@ -527,7 +527,7 @@ const CategoryPage = () => {
                                         <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm">
                                             <tr>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">S#</th>
-                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Prodcut Image</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Product Image</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
