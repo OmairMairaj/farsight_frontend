@@ -585,7 +585,7 @@ const ProductDetail = () => {
                                     alt={product.model}
                                     width={250}
                                     height={180}
-                                    className="rounded-lg object-contain w-24 h-24 sm:w-48 sm:h-48"
+                                    className="rounded-lg object-contain w-20 h-20 sm:w-48 sm:h-48"
                                     priority
                                     onError={(e) => e.target.src = '/images/placeholder.png'}
                                 />
@@ -615,7 +615,7 @@ const ProductDetail = () => {
                             </div>
 
                             {/* ✅ Full-width Details Below */}
-                            <div className="flex flex-col w-full mt-4 space-y-2">
+                            <div className="flex flex-col w-full mt-1 space-y-2">
                                 {/* <p className="text-sm sm:text-base text-gray-600 break-words">
                                     <strong>Category:</strong> {product.category_id?.category_name}
                                 </p> */}
@@ -702,8 +702,9 @@ const ProductDetail = () => {
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Date</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Type</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Qty</th>
-                                    <th className="border border-gray-200 py-2 px-2 sm:px-4">Unit Cost</th>
-                                    <th className='border border-gray-200 py-2 px-2 sm:px-4 text-center'>Total Cost</th>
+                                    {!isMobile &&
+                                        <th className="border border-gray-200 py-2 px-2 sm:px-4">Unit Cost</th>}
+                                    {!isMobile && <th className='border border-gray-200 py-2 px-2 sm:px-4 text-center'>Total Cost</th>}
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4">Comments</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4">Attachments</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Actions</th>
@@ -722,13 +723,17 @@ const ProductDetail = () => {
                                             <td className={`border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 text-right ${stock.stock_type === "Stock In" ? 'text-green-600' : 'text-red-600'}`}>
                                                 {`${stock.stock_type === "Stock In" ? "+" : "-"}${stock.quantity}`}
                                             </td>
-                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700">
-                                                {stock.unit_cost ? `${stock.unit_cost}` : "-"} {/* ✅ NEW FIELD */}
-                                            </td>
-                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 text-right">
-                                                {stock.stock_type === "Stock Out" ? (Number(stock.quantity) * Number(stock.unit_cost) * -1).toLocaleString() : (Number(stock.quantity) * Number(stock.unit_cost)).toLocaleString()} {/* ✅ NEW FIELD */}
-                                            </td>
-                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-64 whitespace-normal">
+                                            {!isMobile &&
+                                                <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700">
+                                                    {stock.unit_cost ? `${stock.unit_cost}` : "-"} {/* ✅ NEW FIELD */}
+                                                </td>
+                                            }
+                                            {!isMobile &&
+                                                <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 text-right">
+                                                    {stock.stock_type === "Stock Out" ? (Number(stock.quantity) * Number(stock.unit_cost) * -1).toLocaleString() : (Number(stock.quantity) * Number(stock.unit_cost)).toLocaleString()} {/* ✅ NEW FIELD */}
+                                                </td>
+                                            }
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-44 sm:min-w-64 whitespace-normal">
                                                 {stock.description || "--"}
                                             </td>
                                             <td className="border border-gray-200 py-1 px-2 sm:px-4 max-w-40 text-xs">
@@ -796,9 +801,11 @@ const ProductDetail = () => {
                                         <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
 
                                         </td>
-                                        <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
-                                            {grandTotal(stocks).toLocaleString()}
-                                        </td>
+                                        {!isMobile &&
+                                            <td colSpan="1" className="border border-gray-300 py-3 px-4 text-left text-gray-800">
+                                                {grandTotal(stocks).toLocaleString()}
+                                            </td>
+                                        }
                                         <td colSpan="3" className="border border-gray-300 py-3 px-4"></td>
                                     </tr>
                                 </tfoot>
