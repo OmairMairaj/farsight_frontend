@@ -714,7 +714,7 @@ const ProductDetail = () => {
                                 {stocks.length > 0 ? (
                                     stocks.map((stock) => (
                                         <tr key={stock._id} className="hover:bg-gray-50 text-xs sm:text-sm">
-                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-[88px]">
+                                            <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 min-w-[80px]">
                                                 {formatDate(stock.date)}
                                             </td>
                                             <td className={`border border-gray-200 py-1 px-2 sm:px-4 font-semibold min-w-[74px] ${stock.stock_type === "Stock In" ? 'text-green-600' : 'text-red-600'}`}>

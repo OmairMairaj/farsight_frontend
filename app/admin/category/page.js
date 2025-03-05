@@ -329,7 +329,7 @@ const Admin = () => {
                 </div>
 
                 {/* ✅ Drag & Drop Table */}
-                <div className="overflow-x-auto overflow-y-auto h-[72vh] rounded-lg border border-gray-50">
+                <div className="overflow-x-auto overflow-y-auto h-[72vh] rounded-lg {border border-gray-300">
                     {isMobile ? (
                         <table className="table-auto w-full text-left border-collapse border border-gray-300">
                             <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">

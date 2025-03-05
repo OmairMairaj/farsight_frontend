@@ -442,7 +442,7 @@ const CategoryPage = () => {
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
-                <div className="overflow-x-auto overflow-y-auto h-[68vh] rounded-lg border border-gray-50">
+                <div className={`overflow-x-auto overflow-y-auto max-h-[70vh] rounded-lg ${isMobile && products?.length >= 7 ? 'border border-gray-300' : ""}`}>
                     {isMobile ? (
                         // ✅ Non-Draggable Table for Mobile
                         <table className="table-auto w-full text-left border-collapse border border-gray-300">
@@ -452,8 +452,8 @@ const CategoryPage = () => {
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-7 bg-blue-400">Product Image</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
                                     {/* <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th> */}
                                     {/* <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th> */}
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
@@ -464,23 +464,23 @@ const CategoryPage = () => {
                                 {products && products.length > 0 ? (
                                     products.map((product, index) => (
                                         <tr key={product._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/product/${product._id}`)}>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-white text-gray-700 text-center">{index + 1}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-white overflow-hidden text-gray-700 text-center">{index + 1}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-7 bg-white text-center flex items-center justify-center min-w-[70px]">
                                                 <img
                                                     src={product.image_path || '/images/placeholder.png'}
                                                     alt={product.model}
                                                     loading="lazy"
-                                                    className="w-20 rounded-md object-contain"
+                                                    className="w-20 h-auto object-cover"
                                                     onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                                                 />
                                             </td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4  text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity > 0 ? product.quantity.toLocaleString() : '-'}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
                                             {/* <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td> */}
                                             {/* <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td> */}
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
+                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 text-[10px] sm:text-sm min-w-40">{product.comments || '-'}</td>
                                             <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
                                                 <button
                                                     onClick={(e) => {
@@ -570,7 +570,7 @@ const CategoryPage = () => {
                                                                         </td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td>
-                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity.toLocaleString() || '-'}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity > 0 ? product.quantity.toLocaleString() : '-'}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
