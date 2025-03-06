@@ -602,7 +602,7 @@ const ProductDetail = () => {
                                             <strong>Supplier:</strong> {product.supplier}
                                         </p> */}
                                         <p className="text-sm sm:text-base font-bold  text-green-600">
-                                            <strong className='text-gray-600'>Current Stock:</strong> {product.quantity.toLocaleString()}
+                                            <strong className='text-gray-600'>Current Stock:</strong> {product.quantity > 0 ? product.quantity.toLocaleString() : '--'}
                                         </p>
                                         <p className="text-sm sm:text-base text-gray-600">
                                             <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0} Rs
@@ -672,7 +672,7 @@ const ProductDetail = () => {
                                             <strong>Supplier:</strong> {product.supplier}
                                         </p>
                                         <p className="text-sm sm:text-base text-gray-600">
-                                            <strong>Current Stock:</strong> {product.quantity.toLocaleString()}
+                                            <strong>Current Stock:</strong> {product.quantity > 0 ? product.quantity.toLocaleString() : '--'}
                                         </p>
                                         <p className="text-sm sm:text-base text-gray-600">
                                             <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0}

@@ -438,7 +438,7 @@ const CategoryPage = () => {
                     )}
                 </div>
 
-                <h1 className="text-sm sm:text-base md:text-lg italic font-bold text-center bg-blue-400 text-white py-0 sm:py-2 rounded-lg">
+                <h1 className="text-sm sm:text-base md:text-lg italic font-bold text-center bg-blue-400 text-white py-0 mb-1 sm:py-2 rounded-lg">
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
