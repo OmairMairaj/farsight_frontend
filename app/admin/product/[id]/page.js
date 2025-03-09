@@ -671,8 +671,8 @@ const ProductDetail = () => {
                                         <p className="text-sm sm:text-base text-gray-600">
                                             <strong>Supplier:</strong> {product.supplier}
                                         </p>
-                                        <p className="text-sm sm:text-base text-gray-600">
-                                            <strong>Current Stock:</strong> {product.quantity > 0 ? product.quantity.toLocaleString() : '--'}
+                                        <p className="text-sm sm:text-base font-bold text-green-600">
+                                            <strong className='text-gray-600'>Current Stock:</strong> {product.quantity > 0 ? product.quantity.toLocaleString() : '--'}
                                         </p>
                                         <p className="text-sm sm:text-base text-gray-600">
                                             <strong>Unit Cost:</strong> {product.unit_cost ? product.unit_cost.toLocaleString() : 0}
@@ -703,7 +703,7 @@ const ProductDetail = () => {
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Type</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Qty</th>
                                     {!isMobile &&
-                                        <th className="border border-gray-200 py-2 px-2 sm:px-4">Unit Cost</th>}
+                                        <th className="border border-gray-200 py-2 px-2 sm:px-4 text-center">Unit Cost</th>}
                                     {!isMobile && <th className='border border-gray-200 py-2 px-2 sm:px-4 text-center'>Total Cost</th>}
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4">Comments</th>
                                     <th className="border border-gray-200 py-2 px-2 sm:px-4">Attachments</th>
@@ -724,7 +724,7 @@ const ProductDetail = () => {
                                                 {`${stock.stock_type === "Stock In" ? "+" : "-"}${stock.quantity}`}
                                             </td>
                                             {!isMobile &&
-                                                <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700">
+                                                <td className="border border-gray-200 py-1 px-2 sm:px-4 text-gray-700 text-center">
                                                     {stock.unit_cost ? `${stock.unit_cost}` : "-"} {/* ✅ NEW FIELD */}
                                                 </td>
                                             }

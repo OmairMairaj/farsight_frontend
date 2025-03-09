@@ -19,3 +19,54 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.ios-scroll-fix {
+  -webkit-overflow-scrolling: touch;
+  /* Enables smooth iOS scrolling */
+  scroll-behavior: smooth;
+  /* Ensures smooth scrolling */
+  overscroll-behavior: contain;
+  /* Prevents page bounce */
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 70vh;
+  position: relative;
+  touch-action: pan-y pan-x;
+  /* Allow only vertical & horizontal scrolling */
+  /* white-space: nowrap; */
+  /* Ensures content doesn't wrap unexpectedly */
+}
+
+.sticky-left {
+  position: sticky;
+  left: 28px;
+  background-color: white;
+  /* z-index: 50; */
+  min-width: 80px;
+  /* ✅ Ensure column has a width */
+  border: 1px solid rgba(209, 213, 219, 1);
+  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+}
+
+.table-container {
+  overflow: auto;
+  /* or overflow-x: auto; overflow-y: auto; */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  /* Allow both directions */
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.table-container img {
+  pointer-events: none;
+  /* prevents iOS from picking up drag on the image */
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}

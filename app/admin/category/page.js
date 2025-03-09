@@ -329,7 +329,7 @@ const Admin = () => {
                 </div>
 
                 {/* ✅ Drag & Drop Table */}
-                <div className="overflow-x-auto overflow-y-auto h-[72vh] rounded-lg {border border-gray-300">
+                <div className="table-container overflow-x-auto overflow-y-auto h-[70vh] rounded-lg {border border-gray-300">
                     {isMobile ? (
                         <table className="table-auto w-full text-left border-collapse border border-gray-300">
                             <thead className="bg-blue-400 text-white text-xs sm:text-sm md:text-sm sticky top-[-1px]">
@@ -448,9 +448,9 @@ const Admin = () => {
                                                                             className="w-64 h-16 rounded-md flex items-center object-contain"
                                                                         />
                                                                     </td>
-                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length}</td>
+                                                                    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-700 font-semibold min-w-20">{category.products.length > 0 ? category.products.length : '-'}</td>
                                                                     <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-gray-800 font-bold">
-                                                                        {calculateCategoryTotalCost(category).toLocaleString()}
+                                                                        {calculateCategoryTotalCost(category) > 0 ? calculateCategoryTotalCost(category).toLocaleString() : "-"}
                                                                     </td>
                                                                     <td className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-green-700 font-semibold min-w-48 max-w-48 sm:max-w-96 truncate-3-lines">
                                                                         {category.comments || '--'}

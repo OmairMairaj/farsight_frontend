@@ -442,12 +442,12 @@ const CategoryPage = () => {
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
-                <div className={`overflow-x-auto overflow-y-auto max-h-[70vh] rounded-lg ${isMobile && products?.length >= 7 ? 'border border-gray-300' : ""}`}>
+                <div draggable="false" className={`table-container  overflow-auto max-h-[60vh] rounded-lg ${isMobile && products?.length >= 7 ? 'border border-gray-300' : ""}`} onDragStart={(e) => e.preventDefault()}>
                     {isMobile ? (
                         // ✅ Non-Draggable Table for Mobile
-                        <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                            <thead className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm z-10">
-                                <tr>
+                        <table draggable="false" className=" table-auto w-full text-left border-collapse border border-gray-300">
+                            <thead draggable="false" className="bg-blue-400 text-white sticky top-[-1px] text-xs sm:text-sm md:text-sm z-10">
+                                <tr draggable="false">
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-blue-400">S#</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-7 bg-blue-400">Product Image</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Model</th>
@@ -456,32 +456,33 @@ const CategoryPage = () => {
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
                                     {/* <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th> */}
                                     {/* <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th> */}
-                                    <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
+                                    <th className="border border-gray-300 py-2 px-2 sm:px-4">Comments</th>
                                     <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-xs sm:text-sm md:text-sm">
+                            <tbody draggable="false" className="text-xs sm:text-sm md:text-sm">
                                 {products && products.length > 0 ? (
                                     products.map((product, index) => (
-                                        <tr key={product._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/product/${product._id}`)}>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-white overflow-hidden text-gray-700 text-center">{index + 1}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-7 bg-white text-center flex items-center justify-center min-w-[70px]">
+                                        <tr draggable="false" key={product._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => router.push(`/admin/product/${product._id}`)}>
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 sticky left-[-1px] bg-white overflow-hidden text-gray-700 text-center">{index + 1}</td>
+                                            <td draggable="false" className=" bg-white border border-gray-300 py-1 px-2 sm:px-4 sticky-left text-center min-w-[60px] max-w-[60px]">
                                                 <img
                                                     src={product.image_path || '/images/placeholder.png'}
                                                     alt={product.model}
                                                     loading="lazy"
-                                                    className="w-20 h-auto object-cover"
+                                                    draggable="false"
+                                                    className="w-full h-12 object-contain"
                                                     onError={(e) => { e.target.onerror = null; e.target.src = '/images/placeholder.png'; }}
                                                 />
                                             </td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4  text-gray-700 min-w-24 text-xs sm:text-sm md:text-sm">{product.model}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity > 0 ? product.quantity.toLocaleString() : '-'}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
-                                            {/* <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td> */}
-                                            {/* <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td> */}
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 text-[10px] sm:text-sm min-w-40">{product.comments || '-'}</td>
-                                            <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4  text-gray-700 min-w-32 text-xs sm:text-sm md:text-sm">{product.model}</td>
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity > 0 ? product.quantity.toLocaleString() : '-'}</td>
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
+                                            {/* <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 min-w-24 text-[10px] sm:text-sm md:text-sm">{product.type}</td> */}
+                                            {/* <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td> */}
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 text-[10px] sm:text-sm min-w-40">{product.comments || '-'}</td>
+                                            <td draggable="false" className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation(); // ✅ Prevent row click event from firing
@@ -496,7 +497,7 @@ const CategoryPage = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="10" className="text-center py-4 text-gray-500">
+                                        <td draggable="false" colSpan="10" className="text-center py-4 text-gray-500">
                                             No products found.
                                         </td>
                                     </tr>
@@ -573,7 +574,7 @@ const CategoryPage = () => {
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{product.quantity > 0 ? product.quantity.toLocaleString() : '-'}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700">{product.supplier}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center">{product.unit_cost > 0 ? product.unit_cost?.toLocaleString() : 0}</td>
-                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product).toLocaleString()}</td>
+                                                                        <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center font-bold">{calculateTotalCost(product) > 0 ? calculateTotalCost(product).toLocaleString() : "-"}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-green-700 font-semibold min-w-40">{product.comments || '-'}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-gray-700 text-center min-w-60">{product.deflection || '-'}</td>
                                                                         <td className="border border-gray-300 py-2 px-2 sm:px-4 text-center">
