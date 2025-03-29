@@ -442,7 +442,7 @@ const CategoryPage = () => {
                     {selectedCategory?.category_name || "Product Listing"}
                 </h1>
 
-                <div draggable="false" className={`table-container  overflow-auto max-h-[60vh] rounded-lg ${isMobile && products?.length >= 7 ? 'border border-gray-300' : ""}`} onDragStart={(e) => e.preventDefault()}>
+                <div draggable="false" className={`table-container  overflow-auto rounded-lg ${isMobile ? 'max-h-[60vh]' : 'max-h-[70vh]'} ${isMobile && products?.length >= 7 ? 'border border-gray-300' : ""}`} onDragStart={(e) => e.preventDefault()}>
                     {isMobile ? (
                         // ✅ Non-Draggable Table for Mobile
                         <table draggable="false" className=" table-auto w-full text-left border-collapse border border-gray-300">
@@ -533,8 +533,8 @@ const CategoryPage = () => {
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">Type</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">Qty</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4">Vendor</th>
-                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Unit Cost</th>
-                                                <th className="border border-gray-300 py-2 px-2 sm:px-4">Total Cost</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Unit Cost</th>
+                                                <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Total Cost</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-40">Comments</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4 min-w-60">Technical</th>
                                                 <th className="border border-gray-300 py-2 px-2 sm:px-4 text-center">Actions</th>
